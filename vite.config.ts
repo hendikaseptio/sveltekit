@@ -8,5 +8,11 @@ export default defineConfig({
 		tailwindcss(),
 		sveltekit(),
 		paraglideVitePlugin({ project: './project.inlang', outdir: './src/lib/paraglide' })
-	]
+	],
+	ssr: {
+		noExternal: ['@tabler/icons-svelte']
+	},
+	optimizeDeps: {
+		include: ['@tabler/icons-svelte']
+	}
 });
