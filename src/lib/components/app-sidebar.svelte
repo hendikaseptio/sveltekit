@@ -1,22 +1,15 @@
 <script lang="ts">
 	import {
-		IconCamera,
-		IconChartBar,
+		IconArticle,
 		IconDashboard,
-		IconDatabase,
-		IconFileAi,
-		IconFileDescription,
-		IconFileWord,
-		IconFolder,
+		IconFile,
 		IconHelp,
 		IconInnerShadowTop,
-		IconListDetails,
-		IconReport,
-		IconSearch,
-		IconSettings,
-		IconUsers
+		IconList,
+		IconPhotoVideo,
+		IconSettings
 	} from '@tabler/icons-svelte';
-	import NavDocuments from './nav-documents.svelte';
+	// import NavDocuments from './nav-documents.svelte';
 	import NavMain from './nav-main.svelte';
 	import NavSecondary from './nav-secondary.svelte';
 	import NavUser from './nav-user.svelte';
@@ -32,110 +25,88 @@
 		navMain: [
 			{
 				title: 'Dashboard',
-				url: '#',
+				url: '/admin/dashboard',
 				icon: IconDashboard
 			},
 			{
-				title: 'Lifecycle',
-				url: '#',
-				icon: IconListDetails
+				title: 'Postingan',
+				url: '/admin/postingan',
+				icon: IconArticle
 			},
 			{
-				title: 'Analytics',
-				url: '#',
-				icon: IconChartBar
+				title: 'Halaman',
+				url: '/admin/halaman',
+				icon: IconFile
 			},
 			{
-				title: 'Projects',
-				url: '#',
-				icon: IconFolder
+				title: 'Kategori',
+				url: '/admin/kategori',
+				icon: IconList
 			},
 			{
-				title: 'Team',
-				url: '#',
-				icon: IconUsers
+				title: 'Media',
+				url: '/admin/media',
+				icon: IconPhotoVideo
 			}
 		],
-		navClouds: [
-			{
-				title: 'Capture',
-				icon: IconCamera,
-				isActive: true,
-				url: '#',
-				items: [
-					{
-						title: 'Active Proposals',
-						url: '#'
-					},
-					{
-						title: 'Archived',
-						url: '#'
-					}
-				]
-			},
-			{
-				title: 'Proposal',
-				icon: IconFileDescription,
-				url: '#',
-				items: [
-					{
-						title: 'Active Proposals',
-						url: '#'
-					},
-					{
-						title: 'Archived',
-						url: '#'
-					}
-				]
-			},
-			{
-				title: 'Prompts',
-				icon: IconFileAi,
-				url: '#',
-				items: [
-					{
-						title: 'Active Proposals',
-						url: '#'
-					},
-					{
-						title: 'Archived',
-						url: '#'
-					}
-				]
-			}
-		],
+		// navClouds: [
+		// 	{
+		// 		title: 'Capture',
+		// 		icon: IconCamera,
+		// 		isActive: true,
+		// 		url: '#',
+		// 		items: [
+		// 			{
+		// 				title: 'Active Proposals',
+		// 				url: '#'
+		// 			},
+		// 			{
+		// 				title: 'Archived',
+		// 				url: '#'
+		// 			}
+		// 		]
+		// 	},
+		// 	{
+		// 		title: 'Proposal',
+		// 		icon: IconFileDescription,
+		// 		url: '#',
+		// 		items: [
+		// 			{
+		// 				title: 'Active Proposals',
+		// 				url: '#'
+		// 			},
+		// 			{
+		// 				title: 'Archived',
+		// 				url: '#'
+		// 			}
+		// 		]
+		// 	},
+		// 	{
+		// 		title: 'Prompts',
+		// 		icon: IconFileAi,
+		// 		url: '#',
+		// 		items: [
+		// 			{
+		// 				title: 'Active Proposals',
+		// 				url: '#'
+		// 			},
+		// 			{
+		// 				title: 'Archived',
+		// 				url: '#'
+		// 			}
+		// 		]
+		// 	}
+		// ],
 		navSecondary: [
 			{
-				title: 'Settings',
-				url: '#',
+				title: 'Pengaturan',
+				url: '/admin/pengaturan',
 				icon: IconSettings
 			},
 			{
-				title: 'Get Help',
-				url: '#',
+				title: 'Panduan',
+				url: '/admin/panduan',
 				icon: IconHelp
-			},
-			{
-				title: 'Search',
-				url: '#',
-				icon: IconSearch
-			}
-		],
-		documents: [
-			{
-				name: 'Data Library',
-				url: '#',
-				icon: IconDatabase
-			},
-			{
-				name: 'Reports',
-				url: '#',
-				icon: IconReport
-			},
-			{
-				name: 'Word Assistant',
-				url: '#',
-				icon: IconFileWord
 			}
 		]
 	};
@@ -151,7 +122,7 @@
 					{#snippet child({ props })}
 						<a href="##" {...props}>
 							<IconInnerShadowTop class="!size-5" />
-							<span class="text-base font-semibold">Acme Inc.</span>
+							<span class="text-base font-semibold">Blog</span>
 						</a>
 					{/snippet}
 				</Sidebar.MenuButton>
@@ -160,7 +131,7 @@
 	</Sidebar.Header>
 	<Sidebar.Content>
 		<NavMain items={data.navMain} />
-		<NavDocuments items={data.documents} />
+		<!-- <NavDocuments items={data.documents} /> -->
 		<NavSecondary items={data.navSecondary} class="mt-auto" />
 	</Sidebar.Content>
 	<Sidebar.Footer>

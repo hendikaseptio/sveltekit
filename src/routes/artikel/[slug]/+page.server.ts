@@ -1,12 +1,20 @@
 import { db } from '$lib/server/db';
 import { post } from '$lib/server/db/schema';
 import { error } from '@sveltejs/kit';
-import { eq } from 'drizzle-orm';
+import { eq, ne, desc } from 'drizzle-orm';
 
 export const load = async ({ params }) => {
 	const result = await db.select().from(post).where(eq(post.slug, params.slug)).limit(1);
 
 	const article = result[0];
+
+	// Get other recent posts (excluding current)
+	const otherPosts = await db
+		.select()
+		.from(post)
+		.where(ne(post.slug, params.slug))
+		.orderBy(desc(post.publishedAt))
+		.limit(5);
 
 	// Fallback mock for the specific demo slugs if database is empty
 	if (!article) {
@@ -29,13 +37,22 @@ export const load = async ({ params }) => {
 		};
 
 		if (mocks[params.slug]) {
-			return { article: mocks[params.slug] };
+			const currentMock = mocks[params.slug];
+			const otherMocks = Object.entries(mocks)
+				.filter(([slug]) => slug !== params.slug)
+				.map(([slug, data]) => ({ slug, ...data }));
+
+			return { 
+				article: currentMock,
+				otherPosts: otherMocks.length > 0 ? otherMocks : (otherPosts.length > 0 ? otherPosts : [])
+			};
 		}
 
 		throw error(404, 'Artikel tidak ditemukan');
 	}
 
 	return {
-		article
+		article,
+		otherPosts
 	};
 };

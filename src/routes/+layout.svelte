@@ -15,8 +15,8 @@
 
 	let { children } = $props();
 
-	// Check if the current route is an auth route
-	const isAuthRoute = $derived(page.url.pathname.startsWith('/auth'));
+	// Check if the current route is an auth or admin route
+	const isExcludedRoute = $derived(page.url.pathname.startsWith('/auth') || page.url.pathname.startsWith('/admin'));
 </script>
 
 <svelte:head>
@@ -24,8 +24,8 @@
 </svelte:head>
 
 <div class="min-h-screen bg-background font-sans selection:bg-primary/20">
-	<!-- Navbar - Only show if not an auth route -->
-	{#if !isAuthRoute}
+	<!-- Navbar - Only show if not an auth/admin route -->
+	{#if !isExcludedRoute}
 		<header class="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-md">
 			<div class="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
 				<a href="/" class="flex items-center gap-2">
@@ -59,8 +59,8 @@
 		{@render children()}
 	</main>
 
-	<!-- Footer - Only show if not an auth route -->
-	{#if !isAuthRoute}
+	<!-- Footer - Only show if not an auth/admin route -->
+	{#if !isExcludedRoute}
 		<footer class="mt-20 border-t border-border/40 bg-muted/30 py-12">
 			<div class="container mx-auto px-4 md:px-6">
 				<div class="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
