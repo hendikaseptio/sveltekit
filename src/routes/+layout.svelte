@@ -35,7 +35,7 @@
 				<a href="/" class="transition-colors hover:text-primary {page.url.pathname === '/' ? 'text-primary' : ''}">Home</a>
 				<a href="/artikel" class="transition-colors hover:text-primary {page.url.pathname.startsWith('/artikel') ? 'text-primary' : ''}">Artikel</a>
 				<a href="/categories" class="transition-colors hover:text-primary">Categories</a>
-				<a href="/about" class="transition-colors hover:text-primary">About</a>
+				<a href="/about" class="transition-colors hover:text-primary {page.url.pathname.startsWith('/about') ? 'text-primary' : ''}">Tentang Kami</a>
 			</nav>
 
 			<div class="flex items-center gap-4">
@@ -81,7 +81,7 @@
 						<li><a href="/" class="hover:text-primary transition-colors">Home</a></li>
 						<li><a href="/artikel" class="hover:text-primary transition-colors">Artikel</a></li>
 						<li><a href="/categories" class="hover:text-primary transition-colors">Categories</a></li>
-						<li><a href="/about" class="hover:text-primary transition-colors">About Us</a></li>
+						<li><a href="/about" class="hover:text-primary transition-colors">Tentang Kami</a></li>
 					</ul>
 				</div>
 
