@@ -10,9 +10,9 @@ export default defineConfig({
 		paraglideVitePlugin({ project: './project.inlang', outdir: './src/lib/paraglide' })
 	],
 	ssr: {
-		noExternal: ['@tabler/icons-svelte']
+		noExternal: ['@tabler/icons-svelte', 'prosekit', '@prosekit/svelte', '@prosekit/core']
 	},
 	optimizeDeps: {
-		include: ['@tabler/icons-svelte']
+		include: ['@tabler/icons-svelte', 'prosekit', '@prosekit/svelte', '@prosekit/core']
 	}
 });

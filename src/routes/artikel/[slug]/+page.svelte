@@ -52,7 +52,7 @@
 				</header>
 
 				<div class="mt-8 text-lg leading-relaxed text-foreground/90">
-					{data.article.content}
+					{@html data.article.content}
 				</div>
 
 				<footer class="mt-16 border-t border-border/40 pt-10">

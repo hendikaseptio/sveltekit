@@ -1,12 +1,14 @@
 <script lang="ts">
 	import { Button } from "$lib/components/ui/button";
 	import { Input } from "$lib/components/ui/input";
-	import { Textarea } from "$lib/components/ui/textarea";
 	import { Label } from "$lib/components/ui/label";
 	import * as Card from "$lib/components/ui/card";
 	import { IconArrowLeft } from "@tabler/icons-svelte";
+	import TextEditor from "$lib/components/custom/text-editor.svelte";
 
 	let { form } = $props();
+
+	let contentHtml = $state('');
 </script>
 
 <div class="flex flex-col gap-6 max-w-4xl mx-auto w-full px-4 lg:px-6">
@@ -40,8 +42,11 @@
 				</div>
 
 				<div class="space-y-2">
-					<Label for="content">Konten Artikel</Label>
-					<Textarea id="content" name="content" rows={12} placeholder="Tuliskan isi artikel Anda di sini..." required />
+					<Label>Konten Artikel</Label>
+					<TextEditor bind:value={contentHtml} placeholder="Tulis isi artikel Anda di sini..." />
+					
+					<!-- Hidden input to store the HTML content for the form submission -->
+					<input type="hidden" name="content" bind:value={contentHtml} />
 				</div>
 
 				<div class="flex justify-end gap-3 pt-4">

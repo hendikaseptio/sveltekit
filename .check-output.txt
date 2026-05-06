@@ -1,0 +1,77 @@
+
+> sveltekit@0.0.1 check
+> svelte-kit sync && svelte-check --tsconfig ./tsconfig.json
+
+Loading svelte-check in workspace: /Users/hendikaseptio/project/EXPERIMENTAL/sveltekit
+Getting Svelte diagnostics...
+
+/Users/hendikaseptio/project/EXPERIMENTAL/sveltekit/src/lib/components/nav-main.svelte:5:70
+Error: 'Icon' only refers to a type, but is being used as a value here. (ts)
+
+	let { items }: { items: { title: string; url: string; icon?: typeof Icon }[] } = $props();
+</script>
+
+/Users/hendikaseptio/project/EXPERIMENTAL/sveltekit/src/lib/components/nav-secondary.svelte:10:57
+Error: 'Icon' only refers to a type, but is being used as a value here. (ts)
+		...restProps
+	}: { items: { title: string; url: string; icon: typeof Icon }[] } & WithoutChildren<
+		ComponentProps<typeof Sidebar.Group>
+
+/Users/hendikaseptio/project/EXPERIMENTAL/sveltekit/src/lib/components/data-table.svelte:282:42
+Error: Argument of type '{ operation: DragOperationSnapshot<Draggable<Data>, Droppable<Data>>; nativeEvent?: Event | undefined; canceled: boolean; suspend(): { ...; }; }' is not assignable to parameter of type 'Preventable<{ operation: DragOperationSnapshot<Draggable<Data, DragDropManager<any, any>>, Droppable<Data, DragDropManager<any, any>>>; }> | { ...; }'.
+  Type '{ operation: DragOperationSnapshot<Draggable<Data>, Droppable<Data>>; nativeEvent?: Event | undefined; canceled: boolean; suspend(): { ...; }; }' is not assignable to type '{ operation: DragOperationSnapshot<Draggable<Data, DragDropManager<any, any>>, Droppable<Data, DragDropManager<any, any>>>; nativeEvent?: Event | undefined; canceled: boolean; suspend(): { ...; }; }'.
+    The types of 'operation.position' are incompatible between these types.
+      Type 'import("/Users/hendikaseptio/project/EXPERIMENTAL/sveltekit/node_modules/@dnd-kit-svelte/svelte/node_modules/@dnd-kit/abstract/node_modules/@dnd-kit/geometry/dist/index").Position' is not assignable to type 'import("/Users/hendikaseptio/project/EXPERIMENTAL/sveltekit/node_modules/@dnd-kit/geometry/dist/index").Position'.
+        Property '#private' in type 'Position' refers to a different member that cannot be accessed from within type 'Position'. (ts)
+				]}
+				onDragEnd={(e) => (data = move(data, e))}
+			>
+
+/Users/hendikaseptio/project/EXPERIMENTAL/sveltekit/src/lib/components/nav-documents.svelte:13:68
+Error: 'Icon' only refers to a type, but is being used as a value here. (ts)
+
+	let { items }: { items: { name: string; url: string; icon: typeof Icon }[] } = $props();
+
+/Users/hendikaseptio/project/EXPERIMENTAL/sveltekit/src/lib/components/custom/text-editor.svelte:90:32
+Error: Argument of type '{ file: File; }' is not assignable to parameter of type 'UploadImageOptions'.
+  Property 'uploader' is missing in type '{ file: File; }' but required in type 'UploadImageOptions'. (ts)
+			const file = target.files[0];
+			editor.commands.uploadImage({ file });
+			target.value = ''; // reset
+
+/Users/hendikaseptio/project/EXPERIMENTAL/sveltekit/src/lib/components/custom/text-editor.svelte:153:96
+Error: Object literal may only specify known properties, but 'rows' does not exist in type 'InsertTableOptions'. Did you mean to write 'row'? (ts)
+
+		<Button variant="ghost" size="sm" type="button" onclick={() => editor.commands.insertTable({ rows: 3, cols: 3 })} title="Insert Table">
+			<IconTable size={18} />
+
+/Users/hendikaseptio/project/EXPERIMENTAL/sveltekit/src/lib/components/custom/text-editor.svelte:161:9
+Error: Argument of type 'void | VoidFunction' is not assignable to parameter of type '__sveltets_2_SvelteActionReturnType'.
+  Type 'VoidFunction' is not assignable to type '__sveltets_2_SvelteActionReturnType'. (ts)
+			<div 
+				use:editor.mount 
+				class="prose prose-slate dark:prose-invert max-w-none p-4 min-h-full focus:outline-none"
+
+/Users/hendikaseptio/project/EXPERIMENTAL/sveltekit/src/routes/admin/postingan/+page.svelte:21:13
+Error: Type '{ id: string; header: string; type: string; status: string; target: string; limit: string; reviewer: string; }[]' is not assignable to type '{ id: number; header: string; type: string; status: string; target: string; limit: string; reviewer: string; }[]'.
+  Type '{ id: string; header: string; type: string; status: string; target: string; limit: string; reviewer: string; }' is not assignable to type '{ id: number; header: string; type: string; status: string; target: string; limit: string; reviewer: string; }'.
+    Types of property 'id' are incompatible.
+      Type 'string' is not assignable to type 'number'. (ts)
+
+	<DataTable data={data.posts} />
+</div>
+
+/Users/hendikaseptio/project/EXPERIMENTAL/sveltekit/src/routes/artikel/+page.svelte:39:18
+Error: No overload matches this call.
+  Overload 1 of 4, '(value: string | number | Date): Date', gave the following error.
+    Argument of type 'Date | null' is not assignable to parameter of type 'string | number | Date'.
+      Type 'null' is not assignable to type 'string | number | Date'.
+  Overload 2 of 4, '(value: string | number): Date', gave the following error.
+    Argument of type 'Date | null' is not assignable to parameter of type 'string | number'.
+      Type 'null' is not assignable to type 'string | number'. (ts)
+						<span class="text-xs text-muted-foreground">
+							{new Date(post.publishedAt).toLocaleDateString('id-ID', {
+								day: 'numeric',
+
+====================================
+svelte-check found 9 errors and 0 warnings in 7 files
