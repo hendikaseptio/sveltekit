@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ImageUpload from "$lib/components/custom/image-upload.svelte";
 	import { Button } from "$lib/components/ui/button";
 	import { Input } from "$lib/components/ui/input";
 	import { Label } from "$lib/components/ui/label";
@@ -6,7 +7,6 @@
 	import * as Select from "$lib/components/ui/select";
 	import { ArrowLeft, Image as ImageIcon, Calendar, Send } from "lucide-svelte";
 	import TextEditor from "$lib/components/custom/text-editor.svelte";
-	import ImageUpload from "$lib/components/custom/image-upload.svelte";
 
 	let { data, form } = $props();
 	

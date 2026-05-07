@@ -13,6 +13,7 @@
 	} from "lucide-svelte";
 	import { toast } from "svelte-sonner";
 	import { browser } from "$app/environment";
+	import { deserialize } from "$app/forms";
 
 	let { 
 		value = $bindable(""), 
@@ -96,18 +97,21 @@
 			toast.info("Mengupload gambar...");
 			const response = await fetch("/admin/media?/upload", {
 				method: "POST",
-				body: formData
+				body: formData,
+				headers: {
+					'x-sveltekit-action': 'true'
+				}
 			});
 
-			const result = await response.json();
+			const result = deserialize(await response.text());
 			
-			// Handle SvelteKit action response format
-			const data = JSON.parse(result.data);
-			if (data[1]?.uploaded?.[0]?.path) {
-				value = data[1].uploaded[0].path;
+			if (result.type === 'success' && result.data?.uploaded?.[0]?.path) {
+				value = result.data.uploaded[0].path;
 				toast.success("Gambar berhasil diupload");
+			} else if (result.type === 'failure') {
+				throw new Error(result.data?.error || "Upload gagal");
 			} else {
-				throw new Error("Upload gagal");
+				throw new Error("Format respon tidak dikenal");
 			}
 		} catch (error) {
 			console.error(error);
