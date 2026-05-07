@@ -42,4 +42,28 @@ export const page = sqliteTable('page', {
 	createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date())
 });
 
+export const media = sqliteTable('media', {
+	id: text('id')
+		.primaryKey()
+		.$defaultFn(() => crypto.randomUUID()),
+	name: text('name').notNull(),
+	path: text('path').notNull(),
+	type: text('type').notNull(),
+	size: integer('size').notNull(),
+	createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date())
+});
+
+export const setting = sqliteTable('setting', {
+	id: integer('id').primaryKey({ autoIncrement: true }),
+	siteName: text('site_name').notNull().default('My SvelteKit Blog'),
+	siteLogo: text('site_logo'),
+	theme: text('theme').notNull().default('auto'), // light, dark, auto
+	address: text('address'),
+	phone: text('phone'),
+	facebook: text('facebook'),
+	instagram: text('instagram'),
+	x: text('x'),
+	updatedAt: integer('updated_at', { mode: 'timestamp' }).$defaultFn(() => new Date())
+});
+
 export * from './auth.schema';
