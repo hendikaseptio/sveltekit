@@ -21,8 +21,11 @@ export const actions = {
 		const title = formData.get('title') as string;
 		const content = formData.get('content') as string;
 		const excerpt = formData.get('excerpt') as string;
+		const cover = formData.get('cover') as string;
+		const status = formData.get('status') as string;
+		const publishedAtStr = formData.get('publishedAt') as string;
 
-		// Simple slug generator (optional: keep original slug if title hasn't changed?)
+		// Simple slug generator
 		const slug = title
 			.toLowerCase()
 			.replace(/[^a-z0-9]+/g, '-')
@@ -35,7 +38,9 @@ export const actions = {
 					slug,
 					content,
 					excerpt,
-					updatedAt: new Date() // Wait, does schema have updatedAt? Let's check.
+					cover,
+					status,
+					publishedAt: publishedAtStr ? new Date(publishedAtStr) : new Date()
 				})
 				.where(eq(post.id, params.id));
 		} catch (e) {

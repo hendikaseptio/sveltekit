@@ -8,6 +8,9 @@ export const actions = {
 		const title = formData.get('title') as string;
 		const content = formData.get('content') as string;
 		const excerpt = formData.get('excerpt') as string;
+		const cover = formData.get('cover') as string;
+		const status = formData.get('status') as string;
+		const publishedAtStr = formData.get('publishedAt') as string;
 
 		// Simple slug generator
 		const slug = title
@@ -21,7 +24,9 @@ export const actions = {
 				slug,
 				content,
 				excerpt,
-				publishedAt: new Date()
+				cover,
+				status,
+				publishedAt: publishedAtStr ? new Date(publishedAtStr) : new Date()
 			});
 		} catch (e) {
 			console.error(e);

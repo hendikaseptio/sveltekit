@@ -14,13 +14,16 @@
 	import NavSecondary from './nav-secondary.svelte';
 	import NavUser from './nav-user.svelte';
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
+	import { page } from '$app/state';
 	import type { ComponentProps } from 'svelte';
 
-	const data = {
+	const settings = $derived(page.data.settings);
+
+	const data = $derived({
 		user: {
-			name: 'shadcn',
-			email: 'm@example.com',
-			avatar: '/avatars/shadcn.jpg'
+			name: page.data.user?.name || 'User',
+			email: page.data.user?.email || '',
+			avatar: page.data.user?.image || '/avatars/shadcn.jpg'
 		},
 		navMain: [
 			{
@@ -49,54 +52,6 @@
 				icon: Video
 			}
 		],
-		// navClouds: [
-		// 	{
-		// 		title: 'Capture',
-		// 		icon: IconCamera,
-		// 		isActive: true,
-		// 		url: '#',
-		// 		items: [
-		// 			{
-		// 				title: 'Active Proposals',
-		// 				url: '#'
-		// 			},
-		// 			{
-		// 				title: 'Archived',
-		// 				url: '#'
-		// 			}
-		// 		]
-		// 	},
-		// 	{
-		// 		title: 'Proposal',
-		// 		icon: IconFileDescription,
-		// 		url: '#',
-		// 		items: [
-		// 			{
-		// 				title: 'Active Proposals',
-		// 				url: '#'
-		// 			},
-		// 			{
-		// 				title: 'Archived',
-		// 				url: '#'
-		// 			}
-		// 		]
-		// 	},
-		// 	{
-		// 		title: 'Prompts',
-		// 		icon: IconFileAi,
-		// 		url: '#',
-		// 		items: [
-		// 			{
-		// 				title: 'Active Proposals',
-		// 				url: '#'
-		// 			},
-		// 			{
-		// 				title: 'Archived',
-		// 				url: '#'
-		// 			}
-		// 		]
-		// 	}
-		// ],
 		navSecondary: [
 			{
 				title: 'Pengaturan',
@@ -109,7 +64,7 @@
 				icon: HelpCircle
 			}
 		]
-	};
+	});
 
 	let { ...restProps }: ComponentProps<typeof Sidebar.Root> = $props();
 </script>
@@ -120,9 +75,13 @@
 			<Sidebar.MenuItem>
 				<Sidebar.MenuButton class="data-[slot=sidebar-menu-button]:!p-1.5">
 					{#snippet child({ props })}
-						<a href="##" {...props}>
-							<Box class="!size-5" />
-							<span class="text-base font-semibold">Blog</span>
+						<a href="/admin/dashboard" {...props}>
+							{#if settings?.siteLogo}
+								<img src={settings.siteLogo} alt="Logo" class="size-5 object-contain" />
+							{:else}
+								<Box class="!size-5" />
+							{/if}
+							<span class="text-base font-semibold">{settings?.siteName || 'Blog'}</span>
 						</a>
 					{/snippet}
 				</Sidebar.MenuButton>

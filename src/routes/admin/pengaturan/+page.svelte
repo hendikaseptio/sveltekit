@@ -7,7 +7,7 @@
 	import { Textarea } from "$lib/components/ui/textarea";
 	import { enhance } from "$app/forms";
 	import { toast } from "svelte-sonner";
-	import { Globe, Image as ImageIcon, Palette, MapPin, Phone, Facebook, Instagram, Twitter } from "lucide-svelte";
+	import { Globe, Image as ImageIcon, Palette, MapPin, Phone, Link, X } from "lucide-svelte";
 
 	let { data, form } = $props();
 	
@@ -118,7 +118,7 @@
 		<Card.Root>
 			<Card.Header>
 				<Card.Title class="flex items-center gap-2 text-lg">
-					<Facebook size={20} class="text-primary" />
+					<Link size={20} class="text-primary" />
 					Media Sosial
 				</Card.Title>
 				<Card.Description>Tautan ke profil sosial media Anda.</Card.Description>
@@ -127,21 +127,21 @@
 				<div class="space-y-2">
 					<Label for="facebook">Facebook URL</Label>
 					<div class="relative">
-						<Facebook size={16} class="absolute left-3 top-3 text-muted-foreground" />
+						<Link size={16} class="absolute left-3 top-3 text-muted-foreground" />
 						<Input id="facebook" name="facebook" value={data.settings.facebook} class="pl-10" placeholder="https://facebook.com/brand" />
 					</div>
 				</div>
 				<div class="space-y-2">
 					<Label for="instagram">Instagram URL</Label>
 					<div class="relative">
-						<Instagram size={16} class="absolute left-3 top-3 text-muted-foreground" />
+						<Link size={16} class="absolute left-3 top-3 text-muted-foreground" />
 						<Input id="instagram" name="instagram" value={data.settings.instagram} class="pl-10" placeholder="https://instagram.com/brand" />
 					</div>
 				</div>
 				<div class="space-y-2">
 					<Label for="x">X (Twitter) URL</Label>
 					<div class="relative">
-						<Twitter size={16} class="absolute left-3 top-3 text-muted-foreground" />
+						<X size={16} class="absolute left-3 top-3 text-muted-foreground" />
 						<Input id="x" name="x" value={data.settings.x} class="pl-10" placeholder="https://x.com/brand" />
 					</div>
 				</div>

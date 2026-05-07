@@ -17,6 +17,8 @@ export const post = sqliteTable('post', {
 	slug: text('slug').notNull().unique(),
 	content: text('content').notNull(),
 	excerpt: text('excerpt'),
+	cover: text('cover'),
+	status: text('status').notNull().default('draft'), // draft, published
 	publishedAt: integer('published_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
 	authorId: text('author_id').references(() => user.id),
 	categoryId: text('category_id').references(() => category.id)
