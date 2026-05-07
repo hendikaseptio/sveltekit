@@ -32,4 +32,14 @@ export const category = sqliteTable('category', {
 	createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date())
 });
 
+export const page = sqliteTable('page', {
+	id: text('id')
+		.primaryKey()
+		.$defaultFn(() => crypto.randomUUID()),
+	title: text('title').notNull(),
+	slug: text('slug').notNull().unique(),
+	content: text('content').notNull(),
+	createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date())
+});
+
 export * from './auth.schema';

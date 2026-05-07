@@ -9,20 +9,47 @@
 		type ColumnDef,
 		type ColumnFiltersState,
 		type PaginationState,
+		type Row,
 		type RowSelectionState,
 		type SortingState,
 		type VisibilityState
 	} from '@tanstack/table-core';
+	import type { Schema } from './schemas.js';
+	import { RestrictToVerticalAxis } from '@dnd-kit/abstract/modifiers';
 	import { createSvelteTable } from '$lib/components/ui/data-table/data-table.svelte.js';
+	import * as Tabs from '$lib/components/ui/tabs/index.js';
 	import * as Table from '$lib/components/ui/table/index.js';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Select from '$lib/components/ui/select/index.js';
 	import { Label } from '$lib/components/ui/label/index.js';
 	import { FlexRender, renderComponent } from '$lib/components/ui/data-table/index.js';
-	import { Columns, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-svelte';
+	import {
+		Columns,
+		ChevronDown,
+		Plus,
+		ChevronsLeft,
+		ChevronLeft,
+		ChevronRight,
+		ChevronsRight
+	} from 'lucide-svelte';
 	import DataTableCheckbox from './data-table-checkbox.svelte';
+	import DataTableCellViewer from './data-table-cell-viewer.svelte';
+	import DataTableReviewer from './data-table-reviewer.svelte';
 	import DataTableActions from './data-table-actions.svelte';
+	import DataTableDragHandle from './data-table-drag-handle.svelte';
+	import DataTableType from './data-table-type.svelte';
+	import DataTableStatus from './data-table-status.svelte';
+	import DataTableTarget from './data-table-target.svelte';
+	import DataTableLimit from './data-table-limit.svelte';
+	import DataTableHeaderTarget from './data-table-header-target.svelte';
+	import DataTableHeaderLimit from './data-table-header-limit.svelte';
+	import { DragDropProvider } from '@dnd-kit-svelte/svelte';
+	import { move } from '@dnd-kit/helpers';
+	import { useSortable } from '@dnd-kit-svelte/svelte/sortable';
+	import { Badge } from '$lib/components/ui/badge/index.js';
+
+	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
 	import { Search } from 'lucide-svelte';
 
@@ -151,29 +178,7 @@
 
 <div class="flex w-full flex-col gap-4">
 	<div class="flex items-center justify-between gap-4 px-4 lg:px-6">
-		<div class="max-w-sm flex-1">
-			<div class="hidden items-center gap-2 lg:flex">
-				<Label for="rows-per-page" class="text-sm font-medium">Baris per halaman</Label>
-				<Select.Root
-					type="single"
-					bind:value={
-						() => `${table.getState().pagination.pageSize}`, (v) => table.setPageSize(Number(v))
-					}
-				>
-					<Select.Trigger size="sm" class="w-20" id="rows-per-page">
-						{table.getState().pagination.pageSize}
-					</Select.Trigger>
-					<Select.Content side="top">
-						{#each [10, 20, 30, 40, 50] as pageSize (pageSize)}
-							<Select.Item value={pageSize.toString()}>
-								{pageSize}
-							</Select.Item>
-						{/each}
-					</Select.Content>
-				</Select.Root>
-			</div>
-		</div>
-		<div class="relative flex items-center gap-2">
+		<div class="relative max-w-sm flex-1">
 			<Search class="absolute top-2.5 left-2.5 h-4 w-4 text-muted-foreground" />
 			<Input
 				type="search"
@@ -183,6 +188,7 @@
 				oninput={(e) => table.getColumn(searchKey)?.setFilterValue(e.currentTarget.value)}
 			/>
 		</div>
+		<div class="flex items-center gap-2"></div>
 	</div>
 
 	<div class="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6">
@@ -232,6 +238,26 @@
 				{table.getFilteredRowModel().rows.length} baris dipilih.
 			</div>
 			<div class="flex w-full items-center gap-8 lg:w-fit">
+				<div class="hidden items-center gap-2 lg:flex">
+					<Label for="rows-per-page" class="text-sm font-medium">Baris per halaman</Label>
+					<Select.Root
+						type="single"
+						bind:value={
+							() => `${table.getState().pagination.pageSize}`, (v) => table.setPageSize(Number(v))
+						}
+					>
+						<Select.Trigger size="sm" class="w-20" id="rows-per-page">
+							{table.getState().pagination.pageSize}
+						</Select.Trigger>
+						<Select.Content side="top">
+							{#each [10, 20, 30, 40, 50] as pageSize (pageSize)}
+								<Select.Item value={pageSize.toString()}>
+									{pageSize}
+								</Select.Item>
+							{/each}
+						</Select.Content>
+					</Select.Root>
+				</div>
 				<div class="flex w-fit items-center justify-center text-sm font-medium">
 					Halaman {table.getState().pagination.pageIndex + 1} dari
 					{table.getPageCount()}

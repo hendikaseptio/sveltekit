@@ -1,12 +1,8 @@
 <script lang="ts">
-	import DataTable from '$lib/components/custom/data-table.svelte';
-	import { Button } from '$lib/components/ui/button';
-	import { Plus } from 'lucide-svelte';
 	import { renderComponent } from "$lib/components/ui/data-table/index.js";
 	import DataTableActions from '$lib/components/custom/data-table-actions.svelte';
 	import type { ColumnDef } from "@tanstack/table-core";
 	import type { Schema } from "$lib/components/schemas.js";
-
 	import CrudPage from '$lib/components/custom/crud-page.svelte';
 
 	let { data } = $props();
@@ -19,11 +15,11 @@
 		},
 		{
 			accessorKey: "header",
-			header: "Nama Kategori",
+			header: "Judul Halaman",
 		},
 		{
 			accessorKey: "target",
-			header: "Slug Kategori",
+			header: "Slug",
 		},
 		{
 			accessorKey: "limit",
@@ -31,19 +27,19 @@
 		},
 		{
 			id: "actions",
-			cell: ({ row }) => renderComponent(DataTableActions, { id: row.original.id, baseUrl: "/admin/kategori" }),
+			cell: ({ row }) => renderComponent(DataTableActions, { id: row.original.id, baseUrl: "/admin/halaman" }),
 		},
 	];
 </script>
 
 <CrudPage
-	title="Kategori"
-	description="Kelola kategori untuk mengelompokkan postingan Anda."
-	addLink="/admin/kategori/tambah"
-	addLabel="Tambah Kategori"
-	data={data.categories}
+	title="Halaman"
+	description="Kelola halaman statis seperti Tentang Kami, Kontak, dll."
+	addLink="/admin/halaman/tambah"
+	addLabel="Tambah Halaman"
+	data={data.pages}
 	{columns}
-	baseUrl="/admin/kategori"
+	baseUrl="/admin/halaman"
 	searchKey="header"
-	searchPlaceholder="Cari kategori..."
+	searchPlaceholder="Cari halaman..."
 />
