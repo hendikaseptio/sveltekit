@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { locales, localizeHref } from '$lib/paraglide/runtime';
+	import { localizeHref as resolve } from '$lib/paraglide/runtime';
 	import { Button } from "$lib/components/ui/button";
 	import { 
 		Menu, 
@@ -29,7 +29,7 @@
 	{#if !isExcludedRoute}
 		<header class="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-md">
 			<div class="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
-				<a href="/" class="flex items-center gap-2">
+				<a href={resolve("/")} class="flex items-center gap-2">
 					{#if settings?.siteLogo}
 						<img src={settings.siteLogo} alt="Logo" class="h-8 object-contain" />
 					{:else}
@@ -41,10 +41,10 @@
 				</a>
 				
 				<nav class="hidden md:flex items-center gap-6 text-sm font-medium">
-					<a href="/" class="transition-colors hover:text-primary {page.url.pathname === '/' ? 'text-primary' : ''}">Home</a>
-					<a href="/artikel" class="transition-colors hover:text-primary {page.url.pathname.startsWith('/artikel') ? 'text-primary' : ''}">Artikel</a>
-					<a href="/categories" class="transition-colors hover:text-primary">Categories</a>
-					<a href="/about" class="transition-colors hover:text-primary {page.url.pathname.startsWith('/about') ? 'text-primary' : ''}">Tentang Kami</a>
+					<a href={resolve("/")} class="transition-colors hover:text-primary {page.url.pathname === '/' ? 'text-primary' : ''}">Home</a>
+					<a href={resolve("/artikel")} class="transition-colors hover:text-primary {page.url.pathname.startsWith('/artikel') ? 'text-primary' : ''}">Artikel</a>
+					<a href={resolve("/categories")} class="transition-colors hover:text-primary">Categories</a>
+					<a href={resolve("/about")} class="transition-colors hover:text-primary {page.url.pathname.startsWith('/about') ? 'text-primary' : ''}">Tentang Kami</a>
 				</nav>
 
 				<div class="flex items-center gap-4">
@@ -102,29 +102,29 @@
 					<div>
 						<h4 class="mb-4 font-bold">Quick Links</h4>
 						<ul class="space-y-2 text-sm text-muted-foreground">
-							<li><a href="/" class="hover:text-primary transition-colors">Home</a></li>
-							<li><a href="/artikel" class="hover:text-primary transition-colors">Artikel</a></li>
-							<li><a href="/categories" class="hover:text-primary transition-colors">Categories</a></li>
-							<li><a href="/about" class="hover:text-primary transition-colors">Tentang Kami</a></li>
+							<li><a href={resolve("/")} class="hover:text-primary transition-colors">Home</a></li>
+							<li><a href={resolve("/artikel")} class="hover:text-primary transition-colors">Artikel</a></li>
+							<li><a href={resolve("/categories")} class="hover:text-primary transition-colors">Categories</a></li>
+							<li><a href={resolve("/about")} class="hover:text-primary transition-colors">Tentang Kami</a></li>
 						</ul>
 					</div>
 
 					<div>
 						<h4 class="mb-4 font-bold">Resources</h4>
 						<ul class="space-y-2 text-sm text-muted-foreground">
-							<li><a href="/" class="hover:text-primary transition-colors">Documentation</a></li>
-							<li><a href="/" class="hover:text-primary transition-colors">Community</a></li>
-							<li><a href="/" class="hover:text-primary transition-colors">Tutorials</a></li>
-							<li><a href="/" class="hover:text-primary transition-colors">Open Source</a></li>
+							<li><a href={resolve("/")} class="hover:text-primary transition-colors">Documentation</a></li>
+							<li><a href={resolve("/")} class="hover:text-primary transition-colors">Community</a></li>
+							<li><a href={resolve("/")} class="hover:text-primary transition-colors">Tutorials</a></li>
+							<li><a href={resolve("/")} class="hover:text-primary transition-colors">Open Source</a></li>
 						</ul>
 					</div>
 
 					<div>
 						<h4 class="mb-4 font-bold">Legal</h4>
 						<ul class="space-y-2 text-sm text-muted-foreground">
-							<li><a href="/" class="hover:text-primary transition-colors">Privacy Policy</a></li>
-							<li><a href="/" class="hover:text-primary transition-colors">Terms of Service</a></li>
-							<li><a href="/" class="hover:text-primary transition-colors">Cookie Policy</a></li>
+							<li><a href={resolve("/")} class="hover:text-primary transition-colors">Privacy Policy</a></li>
+							<li><a href={resolve("/")} class="hover:text-primary transition-colors">Terms of Service</a></li>
+							<li><a href={resolve("/")} class="hover:text-primary transition-colors">Cookie Policy</a></li>
 						</ul>
 					</div>
 				</div>

@@ -2,8 +2,9 @@ import { db } from '$lib/server/db';
 import { post } from '$lib/server/db/schema';
 import { error, redirect } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
+import type { PageServerLoad, Actions } from './$types';
 
-export const load = async ({ params }) => {
+export const load: PageServerLoad = async ({ params }) => {
 	const postData = await db.query.post.findFirst({
 		where: eq(post.id, params.id)
 	});
@@ -15,7 +16,7 @@ export const load = async ({ params }) => {
 	return { post: postData };
 };
 
-export const actions = {
+export const actions: Actions = {
 	default: async ({ request, params }) => {
 		const formData = await request.formData();
 		const title = formData.get('title') as string;

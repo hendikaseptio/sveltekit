@@ -15,7 +15,8 @@
 	import NavUser from './nav-user.svelte';
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
 	import { page } from '$app/state';
-	import type { ComponentProps } from 'svelte';
+	import { localizeHref as resolve } from '$lib/paraglide/runtime';
+	import type { ComponentProps, Component } from 'svelte';
 
 	const settings = $derived(page.data.settings);
 
@@ -28,40 +29,40 @@
 		navMain: [
 			{
 				title: 'Dashboard',
-				url: '/admin/dashboard',
-				icon: LayoutDashboard
+				url: resolve('/admin/dashboard'),
+				icon: LayoutDashboard as unknown as Component
 			},
 			{
 				title: 'Postingan',
-				url: '/admin/postingan',
-				icon: FileText
+				url: resolve('/admin/postingan'),
+				icon: FileText as unknown as Component
 			},
 			{
 				title: 'Halaman',
-				url: '/admin/halaman',
-				icon: File
+				url: resolve('/admin/halaman'),
+				icon: File as unknown as Component
 			},
 			{
 				title: 'Kategori',
-				url: '/admin/kategori',
-				icon: List
+				url: resolve('/admin/kategori'),
+				icon: List as unknown as Component
 			},
 			{
 				title: 'Media',
-				url: '/admin/media',
-				icon: Video
+				url: resolve('/admin/media'),
+				icon: Video as unknown as Component
 			}
 		],
 		navSecondary: [
 			{
 				title: 'Pengaturan',
-				url: '/admin/pengaturan',
-				icon: Settings
+				url: resolve('/admin/pengaturan'),
+				icon: Settings as unknown as Component
 			},
 			{
 				title: 'Panduan',
-				url: '/admin/panduan',
-				icon: HelpCircle
+				url: resolve('/admin/panduan'),
+				icon: HelpCircle as unknown as Component
 			}
 		]
 	});
@@ -75,7 +76,7 @@
 			<Sidebar.MenuItem>
 				<Sidebar.MenuButton class="data-[slot=sidebar-menu-button]:!p-1.5">
 					{#snippet child({ props })}
-						<a href="/admin/dashboard" {...props}>
+						<a href={resolve("/admin/dashboard")} {...props}>
 							{#if settings?.siteLogo}
 								<img src={settings.siteLogo} alt="Logo" class="size-5 object-contain" />
 							{:else}

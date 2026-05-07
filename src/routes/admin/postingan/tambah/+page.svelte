@@ -6,12 +6,14 @@
 	import * as Select from "$lib/components/ui/select";
 	import { ArrowLeft, Image as ImageIcon, Calendar, Send } from "lucide-svelte";
 	import TextEditor from "$lib/components/custom/text-editor.svelte";
+	import ImageUpload from "$lib/components/custom/image-upload.svelte";
 
 	let { form } = $props();
 
 	let contentHtml = $state('');
 	let status = $state('draft');
 	let publishedAt = $state(new Date().toISOString().slice(0, 16));
+	let cover = $state('');
 </script>
 
 <div class="flex flex-col gap-6 max-w-5xl mx-auto w-full px-4 lg:px-6 py-6">
@@ -95,21 +97,8 @@
 				<Card.Header>
 					<Card.Title class="text-sm font-medium">Cover Image</Card.Title>
 				</Card.Header>
-				<Card.Content class="space-y-4">
-					<div class="aspect-video rounded-lg border-2 border-dashed flex items-center justify-center bg-muted/50 overflow-hidden relative">
-						{#if form?.cover || ""}
-							<img src={form.cover} alt="Cover" class="w-full h-full object-cover" />
-						{:else}
-							<div class="flex flex-col items-center gap-2 text-muted-foreground">
-								<ImageIcon size={32} />
-								<span class="text-[10px]">No Image Selected</span>
-							</div>
-						{/if}
-					</div>
-					<div class="space-y-2">
-						<Label for="cover">URL Cover (Media Library)</Label>
-						<Input id="cover" name="cover" placeholder="/uploads/image.jpg" />
-					</div>
+				<Card.Content>
+					<ImageUpload bind:value={cover} name="cover" label="" maxSizeKB={500} />
 				</Card.Content>
 			</Card.Root>
 		</div>

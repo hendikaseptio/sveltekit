@@ -7,12 +7,18 @@
 	import { Textarea } from "$lib/components/ui/textarea";
 	import { enhance } from "$app/forms";
 	import { toast } from "svelte-sonner";
-	import { Globe, Image as ImageIcon, Palette, MapPin, Phone, Link, X } from "lucide-svelte";
+	import { Globe, Palette, MapPin, Phone, Link, X } from "lucide-svelte";
 
-	let { data, form } = $props();
+	let { data } = $props();
 	
 	let selectedTheme = $state(data.settings.theme);
 	let logoPath = $state(data.settings.siteLogo || "");
+
+	// Update state when data changes
+	$effect(() => {
+		selectedTheme = data.settings.theme;
+		logoPath = data.settings.siteLogo || "";
+	});
 </script>
 
 <div class="flex flex-col gap-6 max-w-4xl mx-auto w-full px-4 lg:px-6 py-6">
