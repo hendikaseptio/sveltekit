@@ -1,14 +1,14 @@
 <script lang="ts">
 	import {
-		IconArticle,
-		IconDashboard,
-		IconFile,
-		IconHelp,
-		IconInnerShadowTop,
-		IconList,
-		IconPhotoVideo,
-		IconSettings
-	} from '@tabler/icons-svelte';
+		FileText,
+		LayoutDashboard,
+		File,
+		HelpCircle,
+		Box,
+		List,
+		Video,
+		Settings
+	} from 'lucide-svelte';
 	// import NavDocuments from './nav-documents.svelte';
 	import NavMain from './nav-main.svelte';
 	import NavSecondary from './nav-secondary.svelte';
@@ -26,27 +26,27 @@
 			{
 				title: 'Dashboard',
 				url: '/admin/dashboard',
-				icon: IconDashboard
+				icon: LayoutDashboard
 			},
 			{
 				title: 'Postingan',
 				url: '/admin/postingan',
-				icon: IconArticle
+				icon: FileText
 			},
 			{
 				title: 'Halaman',
 				url: '/admin/halaman',
-				icon: IconFile
+				icon: File
 			},
 			{
 				title: 'Kategori',
 				url: '/admin/kategori',
-				icon: IconList
+				icon: List
 			},
 			{
 				title: 'Media',
 				url: '/admin/media',
-				icon: IconPhotoVideo
+				icon: Video
 			}
 		],
 		// navClouds: [
@@ -101,12 +101,12 @@
 			{
 				title: 'Pengaturan',
 				url: '/admin/pengaturan',
-				icon: IconSettings
+				icon: Settings
 			},
 			{
 				title: 'Panduan',
 				url: '/admin/panduan',
-				icon: IconHelp
+				icon: HelpCircle
 			}
 		]
 	};
@@ -121,7 +121,7 @@
 				<Sidebar.MenuButton class="data-[slot=sidebar-menu-button]:!p-1.5">
 					{#snippet child({ props })}
 						<a href="##" {...props}>
-							<IconInnerShadowTop class="!size-5" />
+							<Box class="!size-5" />
 							<span class="text-base font-semibold">Blog</span>
 						</a>
 					{/snippet}

@@ -5,7 +5,7 @@
 	import type { SvelteNodeViewProps } from 'prosekit/svelte';
 	import { ResizableHandle, ResizableRoot } from 'prosekit/svelte/resizable';
 	import { fromStore } from 'svelte/store';
-	import { IconLoader2, IconPhotoOff, IconArrowDownRight } from '@tabler/icons-svelte';
+	import { Loader2, ImageOff, ArrowDownRight } from 'lucide-svelte';
 	
 	interface Props extends SvelteNodeViewProps {} 
 	const props: Props = $props();
@@ -71,14 +71,14 @@
 	
 	{#if uploading && !error} 
 		<div class="absolute bottom-0 left-0 m-1 flex content-center items-center gap-2 rounded-sm bg-gray-800/60 p-1.5 text-xs text-white/80 transition"> 
-			<IconLoader2 size={16} class="animate-spin" /> 
+			<Loader2 size={16} class="animate-spin" /> 
 			<div>{Math.round(progress * 100)}%</div> 
 		</div> 
 	{/if} 
 	
 	{#if error} 
 		<div class="absolute bottom-0 left-0 right-0 top-0 flex flex-col items-center justify-center gap-4 bg-muted p-2 text-sm @container"> 
-			<IconPhotoOff size={32} /> 
+			<ImageOff size={32} /> 
 			<div class="hidden opacity-80 @xs:block"> Failed to upload image </div> 
 		</div> 
 	{/if} 
@@ -87,6 +87,6 @@
 		class="absolute bottom-0 right-0 rounded-sm m-1.5 p-1 transition bg-primary/30 active:bg-primary hover:bg-primary/80 text-white/50 active:text-white/80 active:translate-x-0.5 active:translate-y-0.5 opacity-0 hover:opacity-100 group-hover:opacity-100 group-data-resizing:opacity-100 cursor-nwse-resize" 
 		position="bottom-right" 
 	> 
-		<IconArrowDownRight size={16} /> 
+		<ArrowDownRight size={16} /> 
 	</ResizableHandle> 
 </ResizableRoot>

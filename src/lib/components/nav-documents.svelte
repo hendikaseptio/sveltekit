@@ -1,16 +1,16 @@
 <script lang="ts">
 	import { 
-		IconDots, 
-		IconFolder, 
-		IconShare3, 
-		IconTrash,
-		type Icon 
-	} from "@tabler/icons-svelte";
+		MoreHorizontal, 
+		Folder, 
+		Share2, 
+		Trash2
+	} from "lucide-svelte";
+	import type { Component } from "svelte";
 
 	import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
 	import * as Sidebar from "$lib/components/ui/sidebar/index.js";
 
-	let { items }: { items: { name: string; url: string; icon: typeof Icon }[] } = $props();
+	let { items }: { items: { name: string; url: string; icon: Component }[] } = $props();
 
 	const sidebar = Sidebar.useSidebar();
 </script>
@@ -36,7 +36,7 @@
 								showOnHover
 								class="data-[state=open]:bg-accent rounded-sm"
 							>
-								<IconDots />
+								<MoreHorizontal />
 								<span class="sr-only">More</span>
 							</Sidebar.MenuAction>
 						{/snippet}
@@ -47,16 +47,16 @@
 						align={sidebar.isMobile ? "end" : "start"}
 					>
 						<DropdownMenu.Item>
-							<IconFolder />
+							<Folder />
 							<span>Open</span>
 						</DropdownMenu.Item>
 						<DropdownMenu.Item>
-							<IconShare3 />
+							<Share2 />
 							<span>Share</span>
 						</DropdownMenu.Item>
 						<DropdownMenu.Separator />
 						<DropdownMenu.Item variant="destructive">
-							<IconTrash />
+							<Trash2 />
 							<span>Delete</span>
 						</DropdownMenu.Item>
 					</DropdownMenu.Content>
@@ -65,7 +65,7 @@
 		{/each}
 		<Sidebar.MenuItem>
 			<Sidebar.MenuButton class="text-sidebar-foreground/70">
-				<IconDots class="text-sidebar-foreground/70" />
+				<MoreHorizontal class="text-sidebar-foreground/70" />
 				<span>More</span>
 			</Sidebar.MenuButton>
 		</Sidebar.MenuItem>

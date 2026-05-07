@@ -1,23 +1,39 @@
 <script lang="ts">
 	import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
 	import { Button } from "$lib/components/ui/button/index.js";
-	import { IconDotsVertical } from "@tabler/icons-svelte";
+	import { goto } from "$app/navigation";
+	import { MoreVertical } from "lucide-svelte";
+
+	let { id, baseUrl = "/admin/postingan" }: { id: string | number, baseUrl?: string } = $props();
 </script>
 
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger class="data-[state=open]:bg-muted text-muted-foreground flex size-8">
 		{#snippet child({ props })}
 			<Button variant="ghost" size="icon" {...props}>
-				<IconDotsVertical />
+				<MoreVertical />
 				<span class="sr-only">Open menu</span>
 			</Button>
 		{/snippet}
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content align="end" class="w-32">
-		<DropdownMenu.Item>Edit</DropdownMenu.Item>
+		<DropdownMenu.Item onSelect={() => goto(`${baseUrl}/${id}`)}>
+			Edit
+		</DropdownMenu.Item>
 		<DropdownMenu.Item>Make a copy</DropdownMenu.Item>
 		<DropdownMenu.Item>Favorite</DropdownMenu.Item>
 		<DropdownMenu.Separator />
-		<DropdownMenu.Item variant="destructive">Delete</DropdownMenu.Item>
+		<form method="POST" action="?/delete">
+			<input type="hidden" name="id" value={id} />
+			<DropdownMenu.Item variant="destructive" onSelect={(e) => {
+				if (!confirm('Apakah Anda yakin ingin menghapus item ini?')) {
+					e.preventDefault();
+					return;
+				}
+				e.currentTarget.closest('form')?.submit();
+			}}>
+				Hapus
+			</DropdownMenu.Item>
+		</form>
 	</DropdownMenu.Content>
 </DropdownMenu.Root>

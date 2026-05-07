@@ -2,14 +2,13 @@
 	import { page } from '$app/state';
 	import { locales, localizeHref } from '$lib/paraglide/runtime';
 	import { Button } from "$lib/components/ui/button";
-	import { HugeiconsIcon } from "@hugeicons/svelte";
 	import { 
-		Menu01Icon, 
-		Search01Icon, 
-		GithubIcon, 
-		TwitterIcon, 
-		Linkedin01Icon 
-	} from "@hugeicons/core-free-icons";
+		Menu, 
+		Search, 
+		Globe, 
+		Send, 
+		UserRound 
+	} from "lucide-svelte";
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
 
@@ -44,11 +43,11 @@
 
 				<div class="flex items-center gap-4">
 					<button class="rounded-full p-2 hover:bg-muted transition-colors">
-						<HugeiconsIcon icon={Search01Icon} size={20} />
+						<Search size={20} />
 					</button>
 					<Button variant="default" size="sm" class="hidden md:flex">Subscribe</Button>
 					<button class="md:hidden rounded-full p-2 hover:bg-muted transition-colors">
-						<HugeiconsIcon icon={Menu01Icon} size={20} />
+						<Menu size={20} />
 					</button>
 				</div>
 			</div>
@@ -75,9 +74,9 @@
 							Elevating digital experiences through insightful content and community-driven knowledge sharing.
 						</p>
 						<div class="flex gap-4">
-							<a href="/" class="text-muted-foreground hover:text-primary transition-colors"><HugeiconsIcon icon={GithubIcon} size={20} /></a>
-							<a href="/" class="text-muted-foreground hover:text-primary transition-colors"><HugeiconsIcon icon={TwitterIcon} size={20} /></a>
-							<a href="/" class="text-muted-foreground hover:text-primary transition-colors"><HugeiconsIcon icon={Linkedin01Icon} size={20} /></a>
+							<a href="/" class="text-muted-foreground hover:text-primary transition-colors"><Globe size={20} /></a>
+							<a href="/" class="text-muted-foreground hover:text-primary transition-colors"><Send size={20} /></a>
+							<a href="/" class="text-muted-foreground hover:text-primary transition-colors"><UserRound size={20} /></a>
 						</div>
 					</div>
 					

@@ -2,13 +2,12 @@
 	import * as Card from "$lib/components/ui/card";
 	import { Button } from "$lib/components/ui/button";
 	import { Badge } from "$lib/components/ui/badge";
-	import { HugeiconsIcon } from "@hugeicons/svelte";
 	import { 
-		ArrowRight01Icon, 
-		UserIcon, 
-		Calendar01Icon,
-		Mail01Icon
-	} from "@hugeicons/core-free-icons";
+		ArrowRight, 
+		User, 
+		Calendar,
+		Mail
+	} from "lucide-svelte";
 
 	const featuredPosts = [
 		{
@@ -63,7 +62,7 @@
 				</p>
 				<div class="flex flex-wrap gap-4">
 					<Button size="lg" class="rounded-full px-8" href="/artikel">
-						Read Latest <HugeiconsIcon icon={ArrowRight01Icon} class="ml-2" size={18} />
+						Read Latest <ArrowRight class="ml-2" size={18} />
 					</Button>
 					<Button variant="outline" size="lg" class="rounded-full px-8" href="/artikel">Browse All</Button>
 				</div>
@@ -101,7 +100,7 @@
 							<div class="flex items-center gap-4 mb-2">
 								<Badge variant="secondary" class="rounded-full">{post.category}</Badge>
 								<span class="text-xs text-muted-foreground flex items-center gap-1">
-									<HugeiconsIcon icon={Calendar01Icon} size={14} /> {post.date}
+									<Calendar size={14} /> {post.date}
 								</span>
 							</div>
 							<Card.Title class="text-2xl group-hover:text-primary transition-colors">
@@ -116,12 +115,12 @@
 						<Card.Footer class="px-0 pt-2 border-t border-border/40 flex items-center justify-between mt-4">
 							<div class="flex items-center gap-2">
 								<div class="h-8 w-8 rounded-full bg-muted flex items-center justify-center">
-									<HugeiconsIcon icon={UserIcon} size={16} class="text-muted-foreground" />
+									<User size={16} class="text-muted-foreground" />
 								</div>
 								<span class="text-sm font-medium">{post.author}</span>
 							</div>
 							<Button variant="ghost" size="sm" class="group/btn" href="/artikel">
-								Read More <HugeiconsIcon icon={ArrowRight01Icon} class="ml-1 transition-transform group-hover/btn:translate-x-1" size={16} />
+								Read More <ArrowRight class="ml-1 transition-transform group-hover/btn:translate-x-1" size={16} />
 							</Button>
 						</Card.Footer>
 					</Card.Root>
@@ -134,7 +133,7 @@
 			<!-- Newsletter -->
 			<section class="rounded-2xl border border-border/40 bg-primary/[0.02] p-6">
 				<div class="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-					<HugeiconsIcon icon={Mail01Icon} size={20} />
+					<Mail size={20} />
 				</div>
 				<h3 class="mb-2 text-lg font-bold">Join the Newsletter</h3>
 				<p class="mb-4 text-sm text-muted-foreground leading-relaxed">

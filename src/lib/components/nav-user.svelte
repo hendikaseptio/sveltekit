@@ -1,11 +1,11 @@
 <script lang="ts">
 	import {
-		IconCreditCard,
-		IconDotsVertical,
-		IconLogout,
-		IconBell,
-		IconUserCircle
-	} from "@tabler/icons-svelte";
+		CreditCard,
+		MoreVertical,
+		LogOut,
+		Bell,
+		User
+	} from "lucide-svelte";
 	import * as Avatar from "$lib/components/ui/avatar/index.js";
 	import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
 	import * as Sidebar from "$lib/components/ui/sidebar/index.js";
@@ -35,7 +35,7 @@
 								{user.email}
 							</span>
 						</div>
-						<IconDotsVertical class="ms-auto size-4" />
+						<MoreVertical class="ms-auto size-4" />
 					</Sidebar.MenuButton>
 				{/snippet}
 			</DropdownMenu.Trigger>
@@ -62,21 +62,21 @@
 				<DropdownMenu.Separator />
 				<DropdownMenu.Group>
 					<DropdownMenu.Item>
-						<IconUserCircle />
+						<User />
 						Account
 					</DropdownMenu.Item>
 					<DropdownMenu.Item>
-						<IconCreditCard />
+						<CreditCard />
 						Billing
 					</DropdownMenu.Item>
 					<DropdownMenu.Item>
-						<IconBell />
+						<Bell />
 						Notifications
 					</DropdownMenu.Item>
 				</DropdownMenu.Group>
 				<DropdownMenu.Separator />
 				<DropdownMenu.Item>
-					<IconLogout />
+					<LogOut />
 					Log out
 				</DropdownMenu.Item>
 			</DropdownMenu.Content>

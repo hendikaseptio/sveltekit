@@ -2,7 +2,6 @@
 	import DataTable from '$lib/components/custom/data-table.svelte';
 	import { Button } from '$lib/components/ui/button';
 	import { Plus } from 'lucide-svelte';
-
 	import { renderComponent } from "$lib/components/ui/data-table/index.js";
 	import DataTableActions from '$lib/components/custom/data-table-actions.svelte';
 	import type { ColumnDef } from "@tanstack/table-core";
@@ -18,19 +17,19 @@
 		},
 		{
 			accessorKey: "header",
-			header: "Judul",
+			header: "Nama Kategori",
 		},
 		{
-			accessorKey: "status",
-			header: "Status",
+			accessorKey: "target",
+			header: "Slug Kategori",
 		},
 		{
 			accessorKey: "limit",
-			header: "Tanggal Posting",
+			header: "Tanggal Dibuat",
 		},
 		{
 			id: "actions",
-			cell: ({ row }) => renderComponent(DataTableActions, { id: row.original.id, baseUrl: "/admin/postingan" }),
+			cell: ({ row }) => renderComponent(DataTableActions, { id: row.original.id, baseUrl: "/admin/kategori" }),
 		},
 	];
 </script>
@@ -38,19 +37,20 @@
 <div class="flex flex-col gap-6">
 	<div class="flex items-center justify-between px-4 lg:px-6">
 		<div>
-			<h2 class="text-2xl font-bold tracking-tight">Postingan</h2>
-			<p class="text-muted-foreground">Kelola semua artikel dan berita di sini.</p>
+			<h2 class="text-2xl font-bold tracking-tight">Kategori</h2>
+			<p class="text-muted-foreground">Kelola kategori untuk mengelompokkan postingan Anda.</p>
 		</div>
-		<Button href="/admin/postingan/tambah" class="gap-2">
+		<Button href="/admin/kategori/tambah" class="gap-2">
 			<Plus size={18} />
-			Buat Postingan
+			Tambah Kategori
 		</Button>
 	</div>
 
 	<DataTable 
-		data={data.posts} 
+		data={data.categories} 
 		{columns} 
+		baseUrl="/admin/kategori" 
 		searchKey="header" 
-		searchPlaceholder="Cari postingan..." 
+		searchPlaceholder="Cari kategori..." 
 	/>
 </div>

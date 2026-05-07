@@ -1,6 +1,6 @@
 import { db } from '$lib/server/db';
 import { post } from '$lib/server/db/schema';
-import { desc } from 'drizzle-orm';
+import { desc, eq } from 'drizzle-orm';
 
 export const load = async () => {
 	const posts = await db.select().from(post).orderBy(desc(post.publishedAt));
@@ -19,4 +19,16 @@ export const load = async () => {
 	return {
 		posts: formattedPosts
 	};
+};
+
+export const actions = {
+	delete: async ({ request }) => {
+		const formData = await request.formData();
+		const id = formData.get('id') as string;
+
+		if (!id) return { success: false };
+
+		await db.delete(post).where(eq(post.id, id));
+		return { success: true };
+	}
 };

@@ -18,7 +18,18 @@ export const post = sqliteTable('post', {
 	content: text('content').notNull(),
 	excerpt: text('excerpt'),
 	publishedAt: integer('published_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
-	authorId: text('author_id').references(() => user.id)
+	authorId: text('author_id').references(() => user.id),
+	categoryId: text('category_id').references(() => category.id)
+});
+
+export const category = sqliteTable('category', {
+	id: text('id')
+		.primaryKey()
+		.$defaultFn(() => crypto.randomUUID()),
+	name: text('name').notNull(),
+	slug: text('slug').notNull().unique(),
+	description: text('description'),
+	createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date())
 });
 
 export * from './auth.schema';

@@ -2,14 +2,13 @@
 	import * as Card from "$lib/components/ui/card";
 	import { Badge } from "$lib/components/ui/badge";
 	import { Button } from "$lib/components/ui/button";
-	import { HugeiconsIcon } from "@hugeicons/svelte";
 	import { 
-		Target02Icon, 
-		UserGroupIcon, 
-		Mail01Icon,
-		Linkedin01Icon,
-		TwitterIcon
-	} from "@hugeicons/core-free-icons";
+		Target, 
+		Users, 
+		Mail,
+		UserRound,
+		Send
+	} from "lucide-svelte";
 
 	const team = [
 		{
@@ -51,7 +50,7 @@
 		<div class="relative aspect-video overflow-hidden rounded-3xl border border-border/40 shadow-xl">
 			<div class="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent"></div>
 			<div class="flex h-full items-center justify-center bg-muted/30">
-				<HugeiconsIcon icon={Target02Icon} size={80} class="text-primary/40" />
+				<Target size={80} class="text-primary/40" />
 			</div>
 		</div>
 		<div class="space-y-6">
@@ -105,10 +104,10 @@
 					</Card.Content>
 					<Card.Footer class="flex justify-center gap-4">
 						<Button variant="ghost" size="icon" class="h-8 w-8 rounded-full">
-							<HugeiconsIcon icon={TwitterIcon} size={16} />
+							<Send size={16} />
 						</Button>
 						<Button variant="ghost" size="icon" class="h-8 w-8 rounded-full">
-							<HugeiconsIcon icon={Linkedin01Icon} size={16} />
+							<UserRound size={16} />
 						</Button>
 					</Card.Footer>
 				</Card.Root>
@@ -118,7 +117,7 @@
 
 	<!-- Contact CTA -->
 	<section class="rounded-3xl bg-primary p-8 text-center text-primary-foreground md:p-16">
-		<HugeiconsIcon icon={Mail01Icon} size={48} class="mx-auto mb-6 opacity-80" />
+		<Mail size={48} class="mx-auto mb-6 opacity-80" />
 		<h2 class="mb-4 text-3xl font-bold tracking-tight">Punya Pertanyaan?</h2>
 		<p class="mx-auto mb-8 max-w-xl opacity-90">
 			Kami selalu senang mendengar dari Anda. Baik itu saran, kritik, atau ajakan kerja sama.

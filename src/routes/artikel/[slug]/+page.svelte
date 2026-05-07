@@ -3,8 +3,7 @@
 	import * as Breadcrumb from '$lib/components/ui/breadcrumb';
 	import { Badge } from '$lib/components/ui/badge';
 	import * as Card from '$lib/components/ui/card';
-	import { HugeiconsIcon } from "@hugeicons/svelte";
-	import { ArrowRight01Icon, Calendar01Icon } from "@hugeicons/core-free-icons";
+	import { ArrowRight, Calendar } from "lucide-svelte";
 
 	let { data } = $props();
 </script>
@@ -38,7 +37,7 @@
 							Teknologi
 						</Badge>
 						<span class="flex items-center gap-1.5 text-sm text-muted-foreground">
-							<HugeiconsIcon icon={Calendar01Icon} size={16} />
+							<Calendar size={16} />
 							{new Date(data.article.publishedAt).toLocaleDateString('id-ID', {
 								day: 'numeric',
 								month: 'long',
@@ -84,7 +83,7 @@
 											{post.title}
 										</h4>
 										<p class="text-xs text-muted-foreground flex items-center gap-1">
-											<HugeiconsIcon icon={Calendar01Icon} size={12} />
+											<Calendar size={12} />
 											{new Date(post.publishedAt).toLocaleDateString('id-ID', {
 												day: 'numeric',
 												month: 'short'
@@ -102,7 +101,7 @@
 					<Card.Footer class="p-4 bg-muted/10 border-t border-border/40">
 						<Button variant="ghost" size="sm" href="/artikel" class="w-full gap-2 text-primary hover:text-primary hover:bg-primary/5">
 							Lihat Semua Artikel
-							<HugeiconsIcon icon={ArrowRight01Icon} size={16} />
+							<ArrowRight size={16} />
 						</Button>
 					</Card.Footer>
 				</Card.Root>

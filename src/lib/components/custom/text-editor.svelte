@@ -3,15 +3,15 @@
 	import { browser } from '$app/environment';
 	import { Button } from "$lib/components/ui/button";
 	import { 
-		IconArrowBackUp, IconArrowForwardUp, 
-		IconBold, IconItalic, IconUnderline, IconStrikethrough, 
-		IconCode,
-		IconH1, IconH2, IconH3, 
-		IconQuote, IconList, IconListNumbers, IconListCheck,
-		IconMinus,
-		IconPlus, IconGripVertical,
-		IconPhoto, IconTable
-	} from "@tabler/icons-svelte";
+		Undo2, Redo2, 
+		Bold, Italic, Underline, Strikethrough, 
+		Code,
+		Heading1, Heading2, Heading3, 
+		Quote, List, ListOrdered, ListChecks,
+		Minus,
+		Plus, GripVertical,
+		Image, Table
+	} from "lucide-svelte";
 	
 	// ProseKit imports
 	import 'prosekit/basic/style.css';
@@ -95,61 +95,61 @@
 	<!-- Toolbar UI -->
 	<div class="flex items-center gap-1 border-b p-1 bg-muted/30 flex-wrap">
 		<Button variant="ghost" size="sm" type="button" onclick={() => editor.commands.undo()} title="Undo">
-			<IconArrowBackUp size={18} />
+			<Undo2 size={18} />
 		</Button>
 		<Button variant="ghost" size="sm" type="button" onclick={() => editor.commands.redo()} title="Redo">
-			<IconArrowForwardUp size={18} />
+			<Redo2 size={18} />
 		</Button>
 		<div class="w-px h-6 bg-border mx-1"></div>
 		<Button variant="ghost" size="sm" type="button" onclick={() => editor.commands.toggleBold()} title="Bold">
-			<IconBold size={18} />
+			<Bold size={18} />
 		</Button>
 		<Button variant="ghost" size="sm" type="button" onclick={() => editor.commands.toggleItalic()} title="Italic">
-			<IconItalic size={18} />
+			<Italic size={18} />
 		</Button>
 		<Button variant="ghost" size="sm" type="button" onclick={() => editor.commands.toggleUnderline()} title="Underline">
-			<IconUnderline size={18} />
+			<Underline size={18} />
 		</Button>
 		<Button variant="ghost" size="sm" type="button" onclick={() => editor.commands.toggleStrike()} title="Strikethrough">
-			<IconStrikethrough size={18} />
+			<Strikethrough size={18} />
 		</Button>
 		<Button variant="ghost" size="sm" type="button" onclick={() => editor.commands.toggleCode()} title="Code">
-			<IconCode size={18} />
+			<Code size={18} />
 		</Button>
 		<div class="w-px h-6 bg-border mx-1"></div>
 		<Button variant="ghost" size="sm" type="button" onclick={() => editor.commands.toggleHeading({ level: 1 })} title="Heading 1">
-			<IconH1 size={18} />
+			<Heading1 size={18} />
 		</Button>
 		<Button variant="ghost" size="sm" type="button" onclick={() => editor.commands.toggleHeading({ level: 2 })} title="Heading 2">
-			<IconH2 size={18} />
+			<Heading2 size={18} />
 		</Button>
 		<Button variant="ghost" size="sm" type="button" onclick={() => editor.commands.toggleHeading({ level: 3 })} title="Heading 3">
-			<IconH3 size={18} />
+			<Heading3 size={18} />
 		</Button>
 		<Button variant="ghost" size="sm" type="button" onclick={() => editor.commands.toggleBlockquote()} title="Blockquote">
-			<IconQuote size={18} />
+			<Quote size={18} />
 		</Button>
 		<div class="w-px h-6 bg-border mx-1"></div>
 		<Button variant="ghost" size="sm" type="button" onclick={() => editor.commands.toggleList({ kind: 'bullet' })} title="Bullet List">
-			<IconList size={18} />
+			<List size={18} />
 		</Button>
 		<Button variant="ghost" size="sm" type="button" onclick={() => editor.commands.toggleList({ kind: 'ordered' })} title="Ordered List">
-			<IconListNumbers size={18} />
+			<ListOrdered size={18} />
 		</Button>
 		<Button variant="ghost" size="sm" type="button" onclick={() => editor.commands.toggleList({ kind: 'task' })} title="Task List">
-			<IconListCheck size={18} />
+			<ListChecks size={18} />
 		</Button>
 		<Button variant="ghost" size="sm" type="button" onclick={() => editor.commands.insertHorizontalRule()} title="Horizontal Rule">
-			<IconMinus size={18} />
+			<Minus size={18} />
 		</Button>
 		<div class="w-px h-6 bg-border mx-1"></div>
 		<Button variant="ghost" size="sm" type="button" onclick={() => fileInput.click()} title="Insert Image">
-			<IconPhoto size={18} />
+			<Image size={18} />
 		</Button>
 		<input type="file" accept="image/*" bind:this={fileInput} onchange={handleImageUpload} class="hidden" />
 
 		<Button variant="ghost" size="sm" type="button" onclick={() => editor.commands.insertTable({ row: 3, col: 3 })} title="Insert Table">
-			<IconTable size={18} />
+			<Table size={18} />
 		</Button>
 	</div>
 	
@@ -165,10 +165,10 @@
 				<BlockHandlePositioner placement="left" class="block overflow-visible w-min h-min z-50 ease-out transition-transform duration-100 motion-reduce:transition-none">
 					<BlockHandlePopup class="flex box-border origin-left transition-[opacity,scale] transition-discrete motion-reduce:transition-none duration-100 data-[state=closed]:duration-150 data-[state=closed]:opacity-0 starting:opacity-0 data-[state=closed]:scale-95 starting:scale-95">
 						<BlockHandleAdd class="h-6 w-6 cursor-pointer flex items-center box-border justify-center hover:bg-muted rounded-sm text-muted-foreground/50 hover:text-foreground">
-							<IconPlus size={16} />
+							<Plus size={16} />
 						</BlockHandleAdd>
 						<BlockHandleDraggable class="h-6 w-5 cursor-grab flex items-center box-border justify-center hover:bg-muted rounded-sm text-muted-foreground/50 hover:text-foreground">
-							<IconGripVertical size={16} />
+							<GripVertical size={16} />
 						</BlockHandleDraggable>
 					</BlockHandlePopup>
 				</BlockHandlePositioner>

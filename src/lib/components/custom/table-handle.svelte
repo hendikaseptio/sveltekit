@@ -8,7 +8,7 @@
 		TableHandleDragPreview, TableHandleDropIndicator, TableHandleRoot, TableHandleRowMenuRoot, 
 		TableHandleRowMenuTrigger, TableHandleRowPopup, TableHandleRowPositioner, 
 	} from 'prosekit/svelte/table-handle';
-	import { IconGripHorizontal, IconGripVertical } from '@tabler/icons-svelte';
+	import { GripHorizontal, GripVertical } from 'lucide-svelte';
 	
 	function getTableHandleState(editor: Editor<TableExtension>) { 
 		return { 
@@ -60,7 +60,7 @@
 		<TableHandleColumnPopup class="translate-y-[50%] flex box-border origin-bottom transition-[opacity,scale] transition-discrete motion-reduce:transition-none duration-100 data-[state=closed]:duration-150 data-[state=closed]:opacity-0 starting:opacity-0 data-[state=closed]:scale-95 starting:scale-95"> 
 			<TableHandleColumnMenuRoot> 
 				<TableHandleColumnMenuTrigger class="h-4.5 w-6 flex items-center box-border justify-center bg-background hover:bg-muted rounded-sm text-muted-foreground/50 hover:text-foreground border border-border p-0 transition-colors overflow-clip cursor-pointer"> 
-					<IconGripHorizontal size={16} /> 
+					<GripHorizontal size={16} /> 
 				</TableHandleColumnMenuTrigger> 
 				
 				<MenuPositioner class="block overflow-visible w-min h-min z-50 ease-out transition-transform duration-100 motion-reduce:transition-none"> 
@@ -101,7 +101,7 @@
 		<TableHandleRowPopup class="ltr:translate-x-[50%] rtl:translate-x-[-50%] flex box-border origin-right transition-[opacity,scale] transition-discrete motion-reduce:transition-none duration-100 data-[state=closed]:duration-150 data-[state=closed]:opacity-0 starting:opacity-0 data-[state=closed]:scale-95 starting:scale-95"> 
 			<TableHandleRowMenuRoot> 
 				<TableHandleRowMenuTrigger class="h-6 w-4.5 flex items-center box-border justify-center bg-background hover:bg-muted rounded-sm text-muted-foreground/50 hover:text-foreground border border-border p-0 transition-colors overflow-clip cursor-pointer"> 
-					<IconGripVertical size={16} /> 
+					<GripVertical size={16} /> 
 				</TableHandleRowMenuTrigger> 
 				
 				<MenuPositioner class="block overflow-visible w-min h-min z-50 ease-out transition-transform duration-100 motion-reduce:transition-none"> 

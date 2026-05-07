@@ -1,8 +1,8 @@
 <script lang="ts">
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
-	import type { Icon } from "@tabler/icons-svelte";
+	import type { Component } from 'svelte';
 
-	let { items }: { items: { title: string; url: string; icon?: typeof Icon }[] } = $props();
+	let { items }: { items: { title: string; url: string; icon?: Component }[] } = $props();
 </script>
 
 <Sidebar.Group>
