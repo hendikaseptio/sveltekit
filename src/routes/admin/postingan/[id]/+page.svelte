@@ -5,7 +5,8 @@
 	import { Label } from "$lib/components/ui/label";
 	import * as Card from "$lib/components/ui/card";
 	import * as Select from "$lib/components/ui/select";
-	import { ArrowLeft, Image as ImageIcon, Calendar, Send } from "lucide-svelte";
+	import { Checkbox } from "$lib/components/ui/checkbox";
+	import { ArrowLeft, Image as ImageIcon, Calendar, Send, Tag } from "lucide-svelte";
 	import TextEditor from "$lib/components/custom/text-editor.svelte";
 
 	let { data, form } = $props();
@@ -91,6 +92,32 @@
 							<Send class="mr-2 h-4 w-4" />
 							Simpan Perubahan
 						</Button>
+					</div>
+				</Card.Content>
+			</Card.Root>
+
+			<Card.Root>
+				<Card.Header class="flex flex-row items-center justify-between space-y-0 pb-2">
+					<Card.Title class="text-sm font-medium">Kategori</Card.Title>
+					<Tag class="h-4 w-4 text-muted-foreground" />
+				</Card.Header>
+				<Card.Content>
+					<div class="space-y-3 max-h-[200px] overflow-y-auto pr-2 custom-scrollbar">
+						{#each data.categories as cat}
+							<div class="flex items-center space-x-2">
+								<Checkbox 
+									id="cat-{cat.id}" 
+									name="categories" 
+									value={cat.id} 
+									checked={data.postCategoryIds.includes(cat.id)} 
+								/>
+								<Label for="cat-{cat.id}" class="text-sm font-normal cursor-pointer hover:text-primary transition-colors">
+									{cat.name}
+								</Label>
+							</div>
+						{:else}
+							<p class="text-xs text-muted-foreground italic">Belum ada kategori.</p>
+						{/each}
 					</div>
 				</Card.Content>
 			</Card.Root>

@@ -1,5 +1,5 @@
 import { db } from '$lib/server/db';
-import { post } from '$lib/server/db/schema';
+import { post, category, postCategory } from '$lib/server/db/schema';
 import { error, redirect } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 import type { PageServerLoad, Actions } from './$types';
@@ -13,7 +13,17 @@ export const load: PageServerLoad = async ({ params }) => {
 		throw error(404, 'Postingan tidak ditemukan');
 	}
 
-	return { post: postData };
+	const categories = await db.select().from(category);
+	const postCategories = await db
+		.select()
+		.from(postCategory)
+		.where(eq(postCategory.postId, params.id));
+
+	return {
+		post: postData,
+		categories,
+		postCategoryIds: postCategories.map((pc) => pc.categoryId)
+	};
 };
 
 export const actions: Actions = {
@@ -25,6 +35,7 @@ export const actions: Actions = {
 		const cover = formData.get('cover') as string;
 		const status = formData.get('status') as string;
 		const publishedAtStr = formData.get('publishedAt') as string;
+		const selectedCategories = formData.getAll('categories') as string[];
 
 		// Simple slug generator
 		const slug = title
@@ -33,7 +44,8 @@ export const actions: Actions = {
 			.replace(/(^-|-$)+/g, '');
 
 		try {
-			await db.update(post)
+			await db
+				.update(post)
 				.set({
 					title,
 					slug,
@@ -44,6 +56,17 @@ export const actions: Actions = {
 					publishedAt: publishedAtStr ? new Date(publishedAtStr) : new Date()
 				})
 				.where(eq(post.id, params.id));
+
+			// Sync categories
+			await db.delete(postCategory).where(eq(postCategory.postId, params.id));
+			if (selectedCategories.length > 0) {
+				await db.insert(postCategory).values(
+					selectedCategories.map((categoryId) => ({
+						postId: params.id,
+						categoryId
+					}))
+				);
+			}
 		} catch (e) {
 			console.error(e);
 			return {

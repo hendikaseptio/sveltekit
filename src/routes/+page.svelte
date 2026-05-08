@@ -2,6 +2,7 @@
 	import * as Card from "$lib/components/ui/card";
 	import { Button } from "$lib/components/ui/button";
 	import { Badge } from "$lib/components/ui/badge";
+	import PostCard from "$lib/components/custom/post-card.svelte";
 	import { 
 		ArrowRight, 
 		User, 
@@ -67,42 +68,7 @@
 
 			<div class="grid gap-8 md:grid-cols-2">
 				{#each featuredPosts as post}
-					<Card.Root class="overflow-hidden border-none bg-transparent group">
-						<div class="aspect-video overflow-hidden rounded-xl border border-border/40">
-							<img 
-								src={post.cover || "/images/placeholder.png"} 
-								alt={post.title} 
-								class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-							/>
-						</div>
-						<Card.Header class="px-0 pb-2">
-							<div class="flex items-center gap-4 mb-2">
-								<Badge variant="secondary" class="rounded-full">{post.category?.name || 'Uncategorized'}</Badge>
-								<span class="text-xs text-muted-foreground flex items-center gap-1">
-									<Calendar size={14} /> {formatDate(post.publishedAt)}
-								</span>
-							</div>
-							<Card.Title class="text-2xl group-hover:text-primary transition-colors">
-								<a href="/artikel/{post.slug}">{post.title}</a>
-							</Card.Title>
-						</Card.Header>
-						<Card.Content class="px-0">
-							<p class="text-muted-foreground leading-relaxed line-clamp-3">
-								{post.excerpt || ''}
-							</p>
-						</Card.Content>
-						<Card.Footer class="px-0 pt-2 border-t border-border/40 flex items-center justify-between mt-4">
-							<div class="flex items-center gap-2">
-								<div class="h-8 w-8 rounded-full bg-muted flex items-center justify-center">
-									<User size={16} class="text-muted-foreground" />
-								</div>
-								<span class="text-sm font-medium">{post.author?.name || 'Anonymous'}</span>
-							</div>
-							<Button variant="ghost" size="sm" class="group/btn" href="/artikel/{post.slug}">
-								Read More <ArrowRight class="ml-1 transition-transform group-hover/btn:translate-x-1" size={16} />
-							</Button>
-						</Card.Footer>
-					</Card.Root>
+					<PostCard {post} />
 				{:else}
 					<div class="col-span-full py-12 text-center text-muted-foreground">
 						Belum ada artikel yang diterbitkan.

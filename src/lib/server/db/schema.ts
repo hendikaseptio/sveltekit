@@ -68,4 +68,13 @@ export const setting = sqliteTable('setting', {
 	updatedAt: integer('updated_at', { mode: 'timestamp' }).$defaultFn(() => new Date())
 });
 
+export const postCategory = sqliteTable('post_category', {
+	postId: text('post_id')
+		.notNull()
+		.references(() => post.id, { onDelete: 'cascade' }),
+	categoryId: text('category_id')
+		.notNull()
+		.references(() => category.id, { onDelete: 'cascade' })
+});
+
 export * from './auth.schema';

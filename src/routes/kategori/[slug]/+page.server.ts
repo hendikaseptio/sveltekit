@@ -1,5 +1,5 @@
 import { db } from '$lib/server/db';
-import { category, post } from '$lib/server/db/schema';
+import { category, post, postCategory } from '$lib/server/db/schema';
 import { user } from '$lib/server/db/auth.schema';
 import { eq, desc } from 'drizzle-orm';
 import { error } from '@sveltejs/kit';
@@ -15,21 +15,27 @@ export const load = async ({ params }) => {
 		throw error(404, 'Kategori tidak ditemukan');
 	}
 
-	const posts = await db.select({
-		id: post.id,
-		title: post.title,
-		slug: post.slug,
-		excerpt: post.excerpt,
-		cover: post.cover,
-		publishedAt: post.publishedAt,
-		author: {
-			name: user.name
-		}
-	})
-	.from(post)
-	.leftJoin(user, eq(post.authorId, user.id))
-	.where(eq(post.categoryId, categoryData.id))
-	.orderBy(desc(post.publishedAt));
+	const posts = await db
+		.select({
+			id: post.id,
+			title: post.title,
+			slug: post.slug,
+			excerpt: post.excerpt,
+			cover: post.cover,
+			publishedAt: post.publishedAt,
+			author: {
+				name: user.name
+			},
+			category: {
+				name: category.name
+			}
+		})
+		.from(post)
+		.innerJoin(postCategory, eq(post.id, postCategory.postId))
+		.leftJoin(category, eq(postCategory.categoryId, category.id))
+		.leftJoin(user, eq(post.authorId, user.id))
+		.where(eq(postCategory.categoryId, categoryData.id))
+		.orderBy(desc(post.publishedAt));
 
 	return {
 		category: categoryData,

@@ -1,7 +1,14 @@
 import { db } from '$lib/server/db';
-import { post } from '$lib/server/db/schema';
+import { post, category, postCategory } from '$lib/server/db/schema';
 import { redirect } from '@sveltejs/kit';
-import type { Actions } from './$types';
+import type { Actions, PageServerLoad } from './$types';
+
+export const load: PageServerLoad = async () => {
+	const categories = await db.select().from(category);
+	return {
+		categories
+	};
+};
 
 export const actions: Actions = {
 	default: async ({ request }) => {
@@ -12,6 +19,7 @@ export const actions: Actions = {
 		const cover = formData.get('cover') as string;
 		const status = formData.get('status') as string;
 		const publishedAtStr = formData.get('publishedAt') as string;
+		const selectedCategories = formData.getAll('categories') as string[];
 
 		// Simple slug generator
 		const slug = title
@@ -20,7 +28,7 @@ export const actions: Actions = {
 			.replace(/(^-|-$)+/g, '');
 
 		try {
-			await db.insert(post).values({
+			const [inserted] = await db.insert(post).values({
 				title,
 				slug,
 				content,
@@ -28,7 +36,16 @@ export const actions: Actions = {
 				cover,
 				status,
 				publishedAt: publishedAtStr ? new Date(publishedAtStr) : new Date()
-			});
+			}).returning({ id: post.id });
+
+			if (selectedCategories.length > 0) {
+				await db.insert(postCategory).values(
+					selectedCategories.map((categoryId) => ({
+						postId: inserted.id,
+						categoryId
+					}))
+				);
+			}
 		} catch (e) {
 			console.error(e);
 			return {
