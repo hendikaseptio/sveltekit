@@ -76,6 +76,7 @@
 		"better-sqlite3": "^12.8.0",
 		"lucide-svelte": "^1.0.1",
 		"prosekit": "^0.20.1",
+		"svelte-dnd-action": "^0.9.69",
 		"svelte-tiptap": "^3.0.1"
 	}
 }

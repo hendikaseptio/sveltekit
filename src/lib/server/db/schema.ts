@@ -41,6 +41,7 @@ export const page = sqliteTable('page', {
 	title: text('title').notNull(),
 	slug: text('slug').notNull().unique(),
 	content: text('content').notNull(),
+	sections: text('sections'), // JSON array of sections
 	createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date())
 });
 

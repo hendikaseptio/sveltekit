@@ -18,7 +18,8 @@ export const actions: Actions = {
 			await db.insert(page).values({
 				title,
 				slug,
-				content
+				content,
+				sections: '[]'
 			});
 		} catch (e: any) {
 			if (e.message?.includes('UNIQUE constraint failed')) {

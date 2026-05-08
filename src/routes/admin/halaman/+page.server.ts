@@ -12,7 +12,7 @@ export const load = async () => {
 		header: p.title,
 		type: 'Halaman',
 		status: 'Active',
-		target: p.slug,
+		target: `/p/${p.slug}`,
 		limit: p.createdAt ? p.createdAt.toLocaleDateString('id-ID') : '-',
 		reviewer: 'Admin'
 	}));
