@@ -19,7 +19,7 @@
 	import SectionEditor from "$lib/components/sections/SectionEditor.svelte";
 	import { dndzone } from "svelte-dnd-action";
 	import { flip } from "svelte/animate";
-	import { Mail, HelpCircle } from "lucide-svelte";
+	import { Mail, HelpCircle, Megaphone, Newspaper } from "lucide-svelte";
 
 	let { form } = $props();
 	
@@ -41,7 +41,9 @@
 		{ type: 'hero-secondary', name: 'Hero Simple', icon: Layout, defaultProps: { title: 'Judul Section', subtitle: 'Deskripsi singkat.', ctaText: '', ctaLink: '#', align: 'center' } },
 		{ type: 'image-text', name: 'Gambar & Teks', icon: Settings2, defaultProps: { title: 'Fitur Unggulan', content: '<p>Jelaskan detail di sini.</p>', image: '/images/placeholder.png', imagePosition: 'left', ctaText: '', ctaLink: '#' } },
 		{ type: 'contact', name: 'Kontak', icon: Mail, defaultProps: { title: 'Hubungi Kami', subtitle: 'Kami siap membantu Anda.', email: 'hello@example.com', phone: '+62 812-3456-7890', address: 'Jl. Contoh No. 1, Jakarta' } },
-		{ type: 'faq', name: 'FAQ', icon: HelpCircle, defaultProps: { title: 'Pertanyaan Umum', subtitle: 'Temukan jawaban di sini.', items: [{ question: 'Pertanyaan 1?', answer: 'Jawaban 1.' }] } }
+		{ type: 'faq', name: 'FAQ', icon: HelpCircle, defaultProps: { title: 'Pertanyaan Umum', subtitle: 'Temukan jawaban di sini.', items: [{ question: 'Pertanyaan 1?', answer: 'Jawaban 1.' }] } },
+		{ type: 'cta', name: 'CTA Banner', icon: Megaphone, defaultProps: { title: 'Siap Memulai?', subtitle: 'Bergabunglah dan rasakan manfaatnya sekarang.', ctaText: 'Mulai Sekarang', ctaLink: '#', ctaSecondaryText: '', ctaSecondaryLink: '#', variant: 'gradient' } },
+		{ type: 'posts', name: 'Artikel Terbaru', icon: Newspaper, defaultProps: { title: 'Artikel Terbaru', subtitle: 'Baca wawasan terkini dari kami.', count: 3, ctaText: 'Lihat Semua', ctaLink: '/artikel' } }
 	];
 
 	function addSection(type: string) {
