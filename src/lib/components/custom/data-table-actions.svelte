@@ -4,7 +4,11 @@
 	import { goto } from "$app/navigation";
 	import { MoreVertical } from "lucide-svelte";
 
-	let { id, baseUrl = "/admin/postingan" }: { id: string | number, baseUrl?: string } = $props();
+	let { 
+		id, 
+		baseUrl = "/admin/postingan",
+		viewUrl = "" 
+	}: { id: string | number, baseUrl?: string, viewUrl?: string } = $props();
 </script>
 
 <DropdownMenu.Root>
@@ -20,6 +24,11 @@
 		<DropdownMenu.Item onSelect={() => goto(`${baseUrl}/${id}`)}>
 			Edit
 		</DropdownMenu.Item>
+		{#if viewUrl}
+			<DropdownMenu.Item onSelect={() => window.open(viewUrl, '_blank')}>
+				Lihat
+			</DropdownMenu.Item>
+		{/if}
 		<DropdownMenu.Item>Make a copy</DropdownMenu.Item>
 		<DropdownMenu.Item>Favorite</DropdownMenu.Item>
 		<DropdownMenu.Separator />

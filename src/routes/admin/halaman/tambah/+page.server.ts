@@ -10,8 +10,10 @@ export const actions: Actions = {
 		const slug = formData.get('slug') as string;
 		const content = formData.get('content') as string;
 
-		if (!title || !slug || !content) {
-			return fail(400, { error: 'Semua field wajib diisi' });
+		const sections = formData.get('sections') as string;
+
+		if (!title || !slug) {
+			return fail(400, { error: 'Judul dan Slug wajib diisi' });
 		}
 
 		try {
@@ -19,7 +21,7 @@ export const actions: Actions = {
 				title,
 				slug,
 				content,
-				sections: '[]'
+				sections
 			});
 		} catch (e: any) {
 			if (e.message?.includes('UNIQUE constraint failed')) {

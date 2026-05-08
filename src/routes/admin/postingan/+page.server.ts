@@ -11,7 +11,7 @@ export const load = async () => {
 		header: p.title,
 		type: 'Postingan',
 		status: 'Published', // You might want to add a status field to schema later
-		target: p.slug,
+		target: `/artikel/${p.slug}`,
 		limit: p.publishedAt ? p.publishedAt.toLocaleDateString('id-ID') : '-',
 		reviewer: 'Admin'
 	}));

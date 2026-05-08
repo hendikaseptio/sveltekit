@@ -28,7 +28,11 @@
 		},
 		{
 			id: "actions",
-			cell: ({ row }: { row: Row<Schema> }) => renderComponent(DataTableActions, { id: row.original.id, baseUrl: "/admin/halaman" }),
+			cell: ({ row }: { row: Row<Schema> }) => renderComponent(DataTableActions, { 
+				id: row.original.id, 
+				baseUrl: "/admin/halaman", 
+				viewUrl: row.original.target 
+			}),
 		},
 	];
 </script>

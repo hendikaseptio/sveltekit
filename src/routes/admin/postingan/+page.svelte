@@ -34,7 +34,11 @@
 		{
 			id: 'actions',
 			cell: ({ row }: { row: Row<Schema> }) =>
-				renderComponent(DataTableActions, { id: row.original.id, baseUrl: '/admin/postingan' })
+				renderComponent(DataTableActions, { 
+					id: row.original.id, 
+					baseUrl: '/admin/postingan', 
+					viewUrl: row.original.target 
+				})
 		}
 	];
 </script>
