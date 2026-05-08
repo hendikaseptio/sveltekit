@@ -43,7 +43,7 @@
 				<nav class="hidden md:flex items-center gap-6 text-sm font-medium">
 					<a href={resolve("/")} class="transition-colors hover:text-primary {page.url.pathname === '/' ? 'text-primary' : ''}">Home</a>
 					<a href={resolve("/artikel")} class="transition-colors hover:text-primary {page.url.pathname.startsWith('/artikel') ? 'text-primary' : ''}">Artikel</a>
-					<a href={resolve("/categories")} class="transition-colors hover:text-primary">Categories</a>
+					<a href={resolve("/kategori")} class="transition-colors hover:text-primary {page.url.pathname.startsWith('/kategori') ? 'text-primary' : ''}">Kategori</a>
 					<a href={resolve("/about")} class="transition-colors hover:text-primary {page.url.pathname.startsWith('/about') ? 'text-primary' : ''}">Tentang Kami</a>
 				</nav>
 
@@ -104,7 +104,7 @@
 						<ul class="space-y-2 text-sm text-muted-foreground">
 							<li><a href={resolve("/")} class="hover:text-primary transition-colors">Home</a></li>
 							<li><a href={resolve("/artikel")} class="hover:text-primary transition-colors">Artikel</a></li>
-							<li><a href={resolve("/categories")} class="hover:text-primary transition-colors">Categories</a></li>
+							<li><a href={resolve("/kategori")} class="hover:text-primary transition-colors">Kategori</a></li>
 							<li><a href={resolve("/about")} class="hover:text-primary transition-colors">Tentang Kami</a></li>
 						</ul>
 					</div>

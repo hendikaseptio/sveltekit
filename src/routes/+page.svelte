@@ -9,42 +9,21 @@
 		Mail
 	} from "lucide-svelte";
 
-	const featuredPosts = [
-		{
-			title: "The Future of AI in Web Development",
-			description: "How artificial intelligence is reshaping the way we build and maintain modern web applications in 2026.",
-			image: "/images/post-ai.png",
-			category: "Technology",
-			date: "May 12, 2026",
-			author: "Alex Rivera"
-		},
-		{
-			title: "Mastering Glassmorphism in UI Design",
-			description: "A deep dive into creating stunning translucent interfaces using modern CSS techniques and Tailwind.",
-			image: "/images/post-design.png",
-			category: "Design",
-			date: "May 10, 2026",
-			author: "Sarah Chen"
-		}
-	];
+	let { data } = $props();
 
-	const recentPosts = [
-		{
-			title: "Svelte 5: The Next Evolution",
-			category: "Development",
-			date: "May 8, 2026"
-		},
-		{
-			title: "Optimizing Tailwind CSS for Production",
-			category: "Performance",
-			date: "May 5, 2026"
-		},
-		{
-			title: "Building Scalable Backend with Drizzle",
-			category: "Backend",
-			date: "May 3, 2026"
-		}
-	];
+	const featuredPosts = data.posts.slice(0, 2);
+	const recentPosts = data.posts.slice(2, 5);
+	const categories = data.categories;
+
+	function formatDate(date: Date | string | null) {
+		if (!date) return '';
+		const d = typeof date === 'string' ? new Date(date) : date;
+		return d.toLocaleDateString('id-ID', {
+			day: 'numeric',
+			month: 'long',
+			year: 'numeric'
+		});
+	}
 </script>
 
 <div class="container mx-auto px-4 py-8 md:px-6">
@@ -91,25 +70,25 @@
 					<Card.Root class="overflow-hidden border-none bg-transparent group">
 						<div class="aspect-video overflow-hidden rounded-xl border border-border/40">
 							<img 
-								src={post.image} 
+								src={post.cover || "/images/placeholder.png"} 
 								alt={post.title} 
 								class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
 							/>
 						</div>
 						<Card.Header class="px-0 pb-2">
 							<div class="flex items-center gap-4 mb-2">
-								<Badge variant="secondary" class="rounded-full">{post.category}</Badge>
+								<Badge variant="secondary" class="rounded-full">{post.category?.name || 'Uncategorized'}</Badge>
 								<span class="text-xs text-muted-foreground flex items-center gap-1">
-									<Calendar size={14} /> {post.date}
+									<Calendar size={14} /> {formatDate(post.publishedAt)}
 								</span>
 							</div>
 							<Card.Title class="text-2xl group-hover:text-primary transition-colors">
-								<a href="/artikel">{post.title}</a>
+								<a href="/artikel/{post.slug}">{post.title}</a>
 							</Card.Title>
 						</Card.Header>
 						<Card.Content class="px-0">
-							<p class="text-muted-foreground leading-relaxed">
-								{post.description}
+							<p class="text-muted-foreground leading-relaxed line-clamp-3">
+								{post.excerpt || ''}
 							</p>
 						</Card.Content>
 						<Card.Footer class="px-0 pt-2 border-t border-border/40 flex items-center justify-between mt-4">
@@ -117,13 +96,17 @@
 								<div class="h-8 w-8 rounded-full bg-muted flex items-center justify-center">
 									<User size={16} class="text-muted-foreground" />
 								</div>
-								<span class="text-sm font-medium">{post.author}</span>
+								<span class="text-sm font-medium">{post.author?.name || 'Anonymous'}</span>
 							</div>
-							<Button variant="ghost" size="sm" class="group/btn" href="/artikel">
+							<Button variant="ghost" size="sm" class="group/btn" href="/artikel/{post.slug}">
 								Read More <ArrowRight class="ml-1 transition-transform group-hover/btn:translate-x-1" size={16} />
 							</Button>
 						</Card.Footer>
 					</Card.Root>
+				{:else}
+					<div class="col-span-full py-12 text-center text-muted-foreground">
+						Belum ada artikel yang diterbitkan.
+					</div>
 				{/each}
 			</div>
 		</section>
@@ -154,11 +137,11 @@
 				<h3 class="mb-4 text-lg font-bold border-l-4 border-primary pl-3">Recent Posts</h3>
 				<div class="space-y-6">
 					{#each recentPosts as post}
-						<div class="group cursor-pointer">
-							<Badge variant="outline" class="mb-1 text-[10px] h-5">{post.category}</Badge>
-							<h4 class="font-semibold group-hover:text-primary transition-colors">{post.title}</h4>
-							<span class="text-xs text-muted-foreground">{post.date}</span>
-						</div>
+						<a href="/artikel/{post.slug}" class="group block cursor-pointer">
+							<Badge variant="outline" class="mb-1 text-[10px] h-5">{post.category?.name || 'Uncategorized'}</Badge>
+							<h4 class="font-semibold group-hover:text-primary transition-colors line-clamp-2">{post.title}</h4>
+							<span class="text-xs text-muted-foreground">{formatDate(post.publishedAt)}</span>
+						</a>
 					{/each}
 				</div>
 			</section>
@@ -167,9 +150,9 @@
 			<section>
 				<h3 class="mb-4 text-lg font-bold border-l-4 border-primary pl-3">Popular Categories</h3>
 				<div class="flex flex-wrap gap-2">
-					{#each ["Technology", "Design", "DevOps", "AI", "Frontend", "Career"] as cat}
+					{#each categories as cat}
 						<Badge variant="secondary" class="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors">
-							{cat}
+							<a href="/kategori/{cat.slug}">{cat.name}</a>
 						</Badge>
 					{/each}
 				</div>
