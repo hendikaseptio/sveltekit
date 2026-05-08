@@ -11,6 +11,7 @@ export const actions: Actions = {
 		const content = formData.get('content') as string;
 
 		const sections = formData.get('sections') as string;
+		const status = (formData.get('status') as string) || 'draft';
 
 		if (!title || !slug) {
 			return fail(400, { error: 'Judul dan Slug wajib diisi' });
@@ -21,7 +22,8 @@ export const actions: Actions = {
 				title,
 				slug,
 				content,
-				sections
+				sections,
+				status
 			});
 		} catch (e: any) {
 			if (e.message?.includes('UNIQUE constraint failed')) {

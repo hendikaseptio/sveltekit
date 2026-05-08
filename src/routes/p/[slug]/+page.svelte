@@ -11,7 +11,7 @@
 
 <div class="min-h-screen pb-20">
 	{#each sections as section (section.id)}
-		<SectionRenderer {section} />
+		<SectionRenderer {section} latestPosts={data.latestPosts ?? []} />
 	{:else}
 		<div class="container mx-auto px-4 py-20">
 			<h1 class="mb-8 text-center text-4xl font-extrabold tracking-tight lg:text-5xl">

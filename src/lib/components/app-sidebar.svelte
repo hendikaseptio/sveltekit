@@ -7,7 +7,8 @@
 		Box,
 		List,
 		Video,
-		Settings
+		Settings,
+		Navigation
 	} from 'lucide-svelte';
 	// import NavDocuments from './nav-documents.svelte';
 	import NavMain from './nav-main.svelte';
@@ -51,6 +52,11 @@
 				title: 'Media',
 				url: resolve('/admin/media'),
 				icon: Video as unknown as Component
+			},
+			{
+				title: 'Menu',
+				url: resolve('/admin/menu'),
+				icon: Navigation as unknown as Component
 			}
 		],
 		navSecondary: [

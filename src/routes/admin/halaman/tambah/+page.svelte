@@ -16,13 +16,16 @@
 		Save
 	} from "lucide-svelte";
 	import SectionRenderer from "$lib/components/sections/SectionRenderer.svelte";
+	import SectionEditor from "$lib/components/sections/SectionEditor.svelte";
 	import { dndzone } from "svelte-dnd-action";
 	import { flip } from "svelte/animate";
+	import { Mail, HelpCircle } from "lucide-svelte";
 
 	let { form } = $props();
 	
 	let title = $state('');
 	let slug = $state('');
+	let status = $state('draft');
 	let sections = $state([]);
 	
 	let activeTab = $state("editor");
@@ -34,31 +37,11 @@
 	});
 
 	const sectionTypes = [
-		{ 
-			type: 'hero', 
-			name: 'Hero Section', 
-			icon: Layout,
-			defaultProps: { 
-				title: 'Judul Hero Baru', 
-				subtitle: 'Tuliskan deskripsi singkat yang menarik di sini.', 
-				ctaText: 'Mulai Sekarang', 
-				ctaLink: '#', 
-				image: '/images/hero.png' 
-			} 
-		},
-		{ 
-			type: 'image-text', 
-			name: 'Gambar & Teks', 
-			icon: Settings2,
-			defaultProps: { 
-				title: 'Fitur Unggulan', 
-				content: '<p>Jelaskan detail fitur atau layanan Anda di sini dengan lebih mendalam.</p>', 
-				image: '/images/placeholder.png', 
-				imagePosition: 'left',
-				ctaText: 'Pelajari Lebih Lanjut',
-				ctaLink: '#'
-			} 
-		}
+		{ type: 'hero', name: 'Hero Utama', icon: Layout, defaultProps: { title: 'Judul Hero', subtitle: 'Deskripsi menarik di sini.', ctaText: 'Mulai Sekarang', ctaLink: '#', image: '/images/hero.png' } },
+		{ type: 'hero-secondary', name: 'Hero Simple', icon: Layout, defaultProps: { title: 'Judul Section', subtitle: 'Deskripsi singkat.', ctaText: '', ctaLink: '#', align: 'center' } },
+		{ type: 'image-text', name: 'Gambar & Teks', icon: Settings2, defaultProps: { title: 'Fitur Unggulan', content: '<p>Jelaskan detail di sini.</p>', image: '/images/placeholder.png', imagePosition: 'left', ctaText: '', ctaLink: '#' } },
+		{ type: 'contact', name: 'Kontak', icon: Mail, defaultProps: { title: 'Hubungi Kami', subtitle: 'Kami siap membantu Anda.', email: 'hello@example.com', phone: '+62 812-3456-7890', address: 'Jl. Contoh No. 1, Jakarta' } },
+		{ type: 'faq', name: 'FAQ', icon: HelpCircle, defaultProps: { title: 'Pertanyaan Umum', subtitle: 'Temukan jawaban di sini.', items: [{ question: 'Pertanyaan 1?', answer: 'Jawaban 1.' }] } }
 	];
 
 	function addSection(type: string) {
@@ -114,11 +97,19 @@
 				</Tabs.List>
 			</Tabs.Root>
 			
-			<form method="POST" class="inline">
+			<form method="POST" class="inline flex items-center gap-2">
 				<input type="hidden" name="title" value={title} />
 				<input type="hidden" name="slug" value={slug} />
 				<input type="hidden" name="content" value="[Structured Content]" />
 				<input type="hidden" name="sections" value={JSON.stringify(sections)} />
+				<input type="hidden" name="status" value={status} />
+				<select
+					bind:value={status}
+					class="h-9 rounded-md border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+				>
+					<option value="draft">Draft</option>
+					<option value="published">Published</option>
+				</select>
 				<Button type="submit" size="sm" class="gap-2">
 					<Save size={16} />
 					Simpan Halaman
@@ -184,7 +175,7 @@
 							onfinalize={handleDndFinalize}
 							class="space-y-4"
 						>
-							{#each sections as section (section.id)}
+							{#each sections as section, i (section.id)}
 								<div animate:flip={{ duration: flipDurationMs }}>
 									<Card.Root class="overflow-hidden border-2 {expandedSectionId === section.id ? 'border-primary' : 'border-transparent shadow-sm'}">
 										<div class="flex items-center px-4 py-3 bg-muted/20">
@@ -221,68 +212,8 @@
 										</div>
 
 										{#if expandedSectionId === section.id}
-											<Card.Content class="p-6 space-y-6 bg-background">
-												{#if section.type === 'hero'}
-													<div class="space-y-4">
-														<div class="space-y-2">
-															<Label>Judul Utama</Label>
-															<Input bind:value={section.props.title} />
-														</div>
-														<div class="space-y-2">
-															<Label>Sub Judul</Label>
-															<textarea 
-																bind:value={section.props.subtitle} 
-																class="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-																rows="3"
-															></textarea>
-														</div>
-														<div class="grid grid-cols-2 gap-4">
-															<div class="space-y-2">
-																<Label>Teks Tombol</Label>
-																<Input bind:value={section.props.ctaText} />
-															</div>
-															<div class="space-y-2">
-																<Label>Link Tombol</Label>
-																<Input bind:value={section.props.ctaLink} />
-															</div>
-														</div>
-														<div class="space-y-2">
-															<Label>URL Gambar</Label>
-															<Input bind:value={section.props.image} />
-														</div>
-													</div>
-												{:else}
-													<div class="space-y-4">
-														<div class="space-y-2">
-															<Label>Judul</Label>
-															<Input bind:value={section.props.title} />
-														</div>
-														<div class="space-y-2">
-															<Label>Konten (HTML)</Label>
-															<textarea 
-																bind:value={section.props.content} 
-																class="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring font-mono"
-																rows="5"
-															></textarea>
-														</div>
-														<div class="grid grid-cols-2 gap-4">
-															<div class="space-y-2">
-																<Label>URL Gambar</Label>
-																<Input bind:value={section.props.image} />
-															</div>
-															<div class="space-y-2">
-																<Label>Posisi Gambar</Label>
-																<select 
-																	bind:value={section.props.imagePosition}
-																	class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring"
-																>
-																	<option value="left">Kiri</option>
-																	<option value="right">Kanan</option>
-																</select>
-															</div>
-														</div>
-													</div>
-												{/if}
+											<Card.Content class="p-6 bg-background">
+												<SectionEditor {sections} index={i} />
 											</Card.Content>
 										{/if}
 									</Card.Root>

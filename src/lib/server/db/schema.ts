@@ -42,6 +42,7 @@ export const page = sqliteTable('page', {
 	slug: text('slug').notNull().unique(),
 	content: text('content').notNull(),
 	sections: text('sections'), // JSON array of sections
+	status: text('status').notNull().default('draft'), // draft | published
 	createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date())
 });
 
@@ -76,6 +77,18 @@ export const postCategory = sqliteTable('post_category', {
 	categoryId: text('category_id')
 		.notNull()
 		.references(() => category.id, { onDelete: 'cascade' })
+});
+
+export const menu = sqliteTable('menu', {
+	id: text('id')
+		.primaryKey()
+		.$defaultFn(() => crypto.randomUUID()),
+	label: text('label').notNull(),
+	url: text('url').notNull(),
+	order: integer('order').notNull().default(0),
+	parentId: text('parent_id'),
+	isExternal: integer('is_external', { mode: 'boolean' }).notNull().default(false),
+	createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date())
 });
 
 export * from './auth.schema';

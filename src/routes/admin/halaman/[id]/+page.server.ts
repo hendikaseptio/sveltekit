@@ -21,7 +21,9 @@ export const actions: Actions = {
 		const formData = await request.formData();
 		const title = formData.get('title') as string;
 		const slug = formData.get('slug') as string;
+		const content = (formData.get('content') as string) || '[Structured Content]';
 		const sections = formData.get('sections') as string;
+		const status = (formData.get('status') as string) || 'draft';
 
 		if (!title || !slug) {
 			return fail(400, { error: 'Judul dan Slug wajib diisi' });
@@ -30,7 +32,7 @@ export const actions: Actions = {
 		try {
 			await db
 				.update(page)
-				.set({ title, slug, content, sections })
+				.set({ title, slug, content, sections, status })
 				.where(eq(page.id, params.id));
 		} catch (e: any) {
 			if (e.message?.includes('UNIQUE constraint failed')) {
