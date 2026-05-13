@@ -91,4 +91,14 @@ export const menu = sqliteTable('menu', {
 	createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date())
 });
 
+export const analytics = sqliteTable('analytics', {
+	id: text('id')
+		.primaryKey()
+		.$defaultFn(() => crypto.randomUUID()),
+	url: text('url').notNull(),
+	ip: text('ip'),
+	userAgent: text('user_agent'),
+	createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date())
+});
+
 export * from './auth.schema';

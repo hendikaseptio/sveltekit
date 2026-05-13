@@ -1,7 +1,16 @@
 <script lang="ts">
-	import { TrendingDown, TrendingUp } from 'lucide-svelte';
+	import { TrendingDown, TrendingUp, Users, FileText, Layout, Eye } from 'lucide-svelte';
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
+
+	let { stats } = $props<{
+		stats: {
+			totalVisitors: number;
+			todayVisitors: number;
+			totalPosts: number;
+			totalPages: number;
+		}
+	}>();
 </script>
 
 <div
@@ -9,82 +18,84 @@
 >
 	<Card.Root class="@container/card">
 		<Card.Header>
-			<Card.Description>Total Revenue</Card.Description>
+			<Card.Description class="flex items-center gap-2">
+				<Users size={16} />
+				Total Pengunjung
+			</Card.Description>
 			<Card.Title class="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-				$1,250.00
+				{stats.totalVisitors.toLocaleString()}
 			</Card.Title>
 			<Card.Action>
-				<Badge variant="outline">
-					<TrendingUp />
-					+12.5%
+				<Badge variant="outline" class="text-green-600 border-green-200 bg-green-50">
+					<TrendingUp class="size-3 mr-1" />
+					Live
 				</Badge>
 			</Card.Action>
 		</Card.Header>
 		<Card.Footer class="flex-col items-start gap-1.5 text-sm">
 			<div class="line-clamp-1 flex gap-2 font-medium">
-				Trending up this month <TrendingUp class="size-4" />
+				Semua kunjungan tercatat <Eye class="size-4" />
 			</div>
-			<div class="text-muted-foreground">Visitors for the last 6 months</div>
+			<div class="text-muted-foreground">Akumulasi sejak website dipasang</div>
 		</Card.Footer>
 	</Card.Root>
+
 	<Card.Root class="@container/card">
 		<Card.Header>
-			<Card.Description>New Customers</Card.Description>
+			<Card.Description class="flex items-center gap-2">
+				<TrendingUp size={16} />
+				Kunjungan Hari Ini
+			</Card.Description>
 			<Card.Title class="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-				1,234
+				{stats.todayVisitors.toLocaleString()}
 			</Card.Title>
 			<Card.Action>
 				<Badge variant="outline">
-					<TrendingDown />
-					-20%
+					Terbaru
 				</Badge>
 			</Card.Action>
 		</Card.Header>
 		<Card.Footer class="flex-col items-start gap-1.5 text-sm">
-			<div class="line-clamp-1 flex gap-2 font-medium">
-				Down 20% this period <TrendingDown class="size-4" />
+			<div class="line-clamp-1 flex gap-2 font-medium text-primary">
+				Update real-time <TrendingUp class="size-4" />
 			</div>
-			<div class="text-muted-foreground">Acquisition needs attention</div>
+			<div class="text-muted-foreground">Kunjungan unik hari ini</div>
 		</Card.Footer>
 	</Card.Root>
+
 	<Card.Root class="@container/card">
 		<Card.Header>
-			<Card.Description>Active Accounts</Card.Description>
+			<Card.Description class="flex items-center gap-2">
+				<FileText size={16} />
+				Total Postingan
+			</Card.Description>
 			<Card.Title class="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-				45,678
+				{stats.totalPosts.toLocaleString()}
 			</Card.Title>
-			<Card.Action>
-				<Badge variant="outline">
-					<TrendingUp />
-					+12.5%
-				</Badge>
-			</Card.Action>
 		</Card.Header>
 		<Card.Footer class="flex-col items-start gap-1.5 text-sm">
 			<div class="line-clamp-1 flex gap-2 font-medium">
-				Strong user retention <TrendingUp class="size-4" />
+				Artikel & Konten <FileText class="size-4" />
 			</div>
-			<div class="text-muted-foreground">Engagement exceed targets</div>
+			<div class="text-muted-foreground">Total artikel di database</div>
 		</Card.Footer>
 	</Card.Root>
+
 	<Card.Root class="@container/card">
 		<Card.Header>
-			<Card.Description>Growth Rate</Card.Description>
+			<Card.Description class="flex items-center gap-2">
+				<Layout size={16} />
+				Halaman Statis
+			</Card.Description>
 			<Card.Title class="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-				4.5%
+				{stats.totalPages.toLocaleString()}
 			</Card.Title>
-			<Card.Action>
-				<Badge variant="outline">
-					<TrendingUp />
-					+4.5%
-				</Badge>
-			</Card.Action>
 		</Card.Header>
 		<Card.Footer class="flex-col items-start gap-1.5 text-sm">
 			<div class="line-clamp-1 flex gap-2 font-medium">
-				Steady performance increase <TrendingUp class="size-4" />
+				Struktur Web <Layout class="size-4" />
 			</div>
-			<div class="text-muted-foreground">Meets growth projections</div>
+			<div class="text-muted-foreground">Halaman landing yang aktif</div>
 		</Card.Footer>
 	</Card.Root>
 </div>

@@ -16,15 +16,18 @@
 		PlusCircle,
 		Database,
 		Loader2,
-		AlertCircle
+		AlertCircle,
+		User
 	} from "lucide-svelte";
 	import { fly } from 'svelte/transition';
 	import { enhance } from '$app/forms';
+	import { authClient } from "$lib/auth-client";
+	import { toast } from "svelte-sonner";
 
 	let { data, form } = $props();
 
 	let step = $state(0);
-	let totalSteps = 3;
+	let totalSteps = 4; // Increased for Admin Account
 
 	// Synchronize step with data.needsInit
 	$effect(() => {
@@ -38,7 +41,13 @@
 	let siteName = $state("");
 	let siteDescription = $state("");
 	let isInitializing = $state(false);
+	let isRegistering = $state(false);
 	
+	// Admin fields
+	let adminEmail = $state("");
+	let adminPassword = $state("");
+	let adminName = $state("");
+
 	let selectedPages = $state([
 		'tentang-kami',
 		'kontak',
@@ -59,6 +68,28 @@
 		} else {
 			selectedPages = [...selectedPages, id];
 		}
+	}
+
+	async function registerAdminAndNext() {
+		if (!adminEmail || !adminPassword || !adminName) {
+			toast.error("Semua data admin harus diisi!");
+			return;
+		}
+
+		isRegistering = true;
+		const { data: authData, error } = await authClient.signUp.email({
+			email: adminEmail,
+			password: adminPassword,
+			name: adminName,
+		});
+
+		if (error) {
+			toast.error("Gagal membuat akun admin: " + error.message);
+		} else {
+			toast.success("Akun admin berhasil dibuat!");
+			nextStep();
+		}
+		isRegistering = false;
 	}
 
 	function nextStep() {
@@ -116,8 +147,9 @@
 									isInitializing = true;
 									return async ({ result }) => {
 										isInitializing = false;
-										// result will be handled by SvelteKit's standard behavior
-										// but we can add extra logic here if needed
+										if (result.type === 'success') {
+											window.location.reload();
+										}
 									};
 								}}
 							>
@@ -173,6 +205,47 @@
 					</Card.Root>
 				</div>
 			{:else if step === 2}
+				<div transition:fly={{ x: 20, duration: 300 }}>
+					<Card.Root class="border-2 shadow-2xl overflow-hidden">
+						<Card.Header class="bg-muted/50 border-b">
+							<Card.Title class="flex items-center gap-2">
+								<User class="text-primary" size={20} />
+								Akun Admin
+							</Card.Title>
+							<Card.Description>Buat akun untuk masuk ke dashboard admin.</Card.Description>
+						</Card.Header>
+						<Card.Content class="p-8 space-y-4">
+							<div class="space-y-2">
+								<Label for="adminName">Nama Lengkap</Label>
+								<Input id="adminName" bind:value={adminName} placeholder="Super Admin" />
+							</div>
+							<div class="space-y-2">
+								<Label for="adminEmail">Email Admin</Label>
+								<Input id="adminEmail" type="email" bind:value={adminEmail} placeholder="admin@example.com" />
+							</div>
+							<div class="space-y-2">
+								<Label for="adminPassword">Password</Label>
+								<Input id="adminPassword" type="password" bind:value={adminPassword} placeholder="••••••••" />
+							</div>
+						</Card.Content>
+						<Card.Footer class="bg-muted/50 border-t p-4 flex justify-between">
+							<Button variant="ghost" onclick={prevStep} class="gap-2">
+								<ArrowLeft size={18} />
+								Kembali
+							</Button>
+							<Button onclick={registerAdminAndNext} disabled={isRegistering} class="gap-2 px-8">
+								{#if isRegistering}
+									<Loader2 class="animate-spin" size={18} />
+									Mendaftarkan...
+								{:else}
+									Buat Akun & Lanjut
+									<ArrowRight size={18} />
+								{/if}
+							</Button>
+						</Card.Footer>
+					</Card.Root>
+				</div>
+			{:else if step === 3}
 				<div transition:fly={{ x: 20, duration: 300 }}>
 					<Card.Root class="border-2 shadow-2xl overflow-hidden">
 						<Card.Header class="bg-muted/50 border-b">
@@ -240,6 +313,10 @@
 									<div>
 										<h4 class="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1">Nama Website</h4>
 										<p class="text-xl font-bold">{siteName || 'Belum diisi'}</p>
+									</div>
+									<div>
+										<h4 class="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1">Akun Admin</h4>
+										<p class="text-sm font-medium">{adminName} ({adminEmail})</p>
 									</div>
 									<div>
 										<h4 class="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1">Halaman yang akan dibuat</h4>
