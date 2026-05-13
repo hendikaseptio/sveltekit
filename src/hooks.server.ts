@@ -49,6 +49,11 @@ const handleGuard: Handle = async ({ event, resolve }) => {
 		throw redirect(303, '/admin/dashboard');
 	}
 
+	// 3. Disable Registration (Redirect to login)
+	if (url === '/auth/register') {
+		throw redirect(303, '/auth/login');
+	}
+
 	return resolve(event);
 };
 

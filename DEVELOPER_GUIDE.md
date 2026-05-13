@@ -14,6 +14,7 @@ Proyek ini dibangun menggunakan teknologi mutakhir untuk performa dan pengalaman
 - **Authentication**: [Better Auth](https://better-auth.com).
 - **UI Components**: [Bits UI](https://bits-ui.com) & Custom Shadcn-like components.
 - **Charts**: [LayerChart](https://layerchart.com).
+- **Icons**: [Lucide Svelte](https://lucide.dev).
 
 ---
 
@@ -52,11 +53,14 @@ Sistem akan mendeteksi jika database belum terinstal atau website belum dikonfig
 ### 2. Real-Time Visitor Analytics
 Sistem memiliki middleware di `hooks.server.ts` yang mencatat setiap kunjungan halaman publik secara asinkron. Data ditampilkan di Admin Dashboard dalam bentuk grafik interaktif dan tabel halaman terpopuler.
 
-### 3. Integrated Auth Package
-Autentikasi lengkap menggunakan Better Auth:
-- **Login/Register**: Dengan preview password toggle.
-- **Forgot Password**: Simulasi pengiriman link reset ke terminal/console.
-- **Middleware Guard**: Memproteksi folder `/admin` dari akses tanpa login.
+### 3. Integrated Auth & Seeding
+Sistem menggunakan Better Auth dengan kebijakan keamanan ketat:
+- **Registration Disabled**: Fitur pendaftaran publik dinonaktifkan untuk mencegah akses tidak sah. Akses ke `/auth/register` otomatis di-redirect ke login.
+- **Automated Seeding**: Akun Admin dan Editor dibuat secara otomatis saat proses Setup Wizard melalui server-side action di `src/routes/admin/setup/+page.server.ts`.
+- **Default Credentials**:
+  - Admin: `admin@blog.com` / `password123`
+  - Editor: `editor@blog.com` / `password123`
+- **Security Features**: Dilengkapi password visibility toggle dan proteksi route tingkat middleware.
 
 ### 4. Modular Page Builder
 Halaman statis dibangun menggunakan sistem section modular yang disimpan sebagai JSON di database, memungkinkan fleksibilitas tinggi dalam penyusunan konten.
@@ -103,6 +107,8 @@ Aplikasi ini menggunakan `sequence` middleware di `src/hooks.server.ts`:
 - Gunakan Svelte Runes (`$state`, `$derived`, `$effect`) untuk reaktivitas.
 - Untuk mengedit schema database, ubah file `src/lib/server/db/schema.ts` lalu jalankan `npm run db:push`.
 - Link reset password di mode development akan muncul di **console terminal**.
+- **PENTING**: Halaman pendaftaran sengaja dimatikan. Jika ingin menambah user, gunakan sistem seeder atau buat UI internal di dashboard admin.
+- Kredensial default (`admin@blog.com`) hanya disarankan untuk instalasi awal.
 
 ---
 *Dokumentasi ini dibuat untuk membantu tim pengembang menjaga kualitas dan keberlanjutan kode proyek SvelteBlog.*

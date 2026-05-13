@@ -5,6 +5,7 @@ import type { PageServerLoad, Actions } from './$types';
 import { exec } from 'child_process';
 import { promisify } from 'util';
 import { env as dynamicEnv } from '$env/dynamic/private';
+import { auth } from '$lib/server/auth';
 
 const execPromise = promisify(exec);
 
@@ -72,7 +73,33 @@ export const actions: Actions = {
 			}
 		});
 
-		// 2. Create Pages and Menus
+		// 2. Create Default Users (Admin & Editor)
+		// Note: Better Auth uses signUpEmail server-side
+		try {
+			// Admin
+			await auth.api.signUpEmail({
+				body: {
+					email: 'admin@blog.com',
+					password: 'password123',
+					name: 'Super Admin'
+				}
+			});
+
+			// Editor
+			await auth.api.signUpEmail({
+				body: {
+					email: 'editor@blog.com',
+					password: 'password123',
+					name: 'Content Editor'
+				}
+			});
+			
+			console.log('✅ Default users seeded successfully');
+		} catch (e) {
+			console.error('User seeding failed (likely already exists):', e);
+		}
+
+		// 3. Create Pages and Menus
 		const pageTemplates: Record<string, any> = {
 			'tentang-kami': [
 				{ id: '1', type: 'hero-secondary', props: { title: 'Tentang Kami', subtitle: 'Mengenal lebih dekat siapa kami.', align: 'center' } },

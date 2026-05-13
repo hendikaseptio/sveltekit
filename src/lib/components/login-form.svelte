@@ -114,7 +114,7 @@
 					Google
 				</Button>
 				<FieldDescription class="text-center text-xs pt-2">
-					Belum punya akun? <a href="/auth/register" class="font-bold text-primary hover:underline">Daftar Admin Baru</a>
+					Lupa akses? <a href="/auth/forgot-password" class="font-bold text-primary hover:underline">Hubungi Super Admin</a>
 				</FieldDescription>
 			</FieldGroup>
 		</form>
