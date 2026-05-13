@@ -7,11 +7,24 @@
 
 	let { data, form } = $props();
 
+	// svelte-ignore state_referenced_locally
 	let label = $state(data.menuItem.label);
+	// svelte-ignore state_referenced_locally
 	let url = $state(data.menuItem.url);
+	// svelte-ignore state_referenced_locally
 	let order = $state(data.menuItem.order);
+	// svelte-ignore state_referenced_locally
 	let parentId = $state(data.menuItem.parentId || '');
+	// svelte-ignore state_referenced_locally
 	let isExternal = $state(data.menuItem.isExternal ?? false);
+
+	$effect(() => {
+		label = data.menuItem.label;
+		url = data.menuItem.url;
+		order = data.menuItem.order;
+		parentId = data.menuItem.parentId || '';
+		isExternal = data.menuItem.isExternal ?? false;
+	});
 </script>
 
 <div class="flex flex-col gap-6 max-w-2xl mx-auto w-full px-4 lg:px-6 py-6">

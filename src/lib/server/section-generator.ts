@@ -31,11 +31,19 @@ function genHero(p: any): string {
 		<div class="container mx-auto px-4 md:px-6">
 			<div class="grid gap-12 lg:grid-cols-2 lg:items-center">
 				<div class="space-y-8">
-					<h1 class="text-4xl font-extrabold tracking-tight md:text-5xl lg:text-6xl">${esc(p.title)}</h1>
-					<p class="text-xl text-muted-foreground leading-relaxed">${esc(p.subtitle)}</p>
-					${p.ctaText ? `<a href="${esc(p.ctaLink)}" class="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-3 text-base font-semibold text-primary-foreground hover:bg-primary/90 transition-colors">${esc(p.ctaText)} <ArrowRight size={18} /></a>` : ''}
+					<h1 class="text-4xl font-extrabold tracking-tight md:text-5xl lg:text-6xl">{content.hero.title}</h1>
+					<p class="text-xl text-muted-foreground leading-relaxed">{content.hero.subtitle}</p>
+					{#if content.hero.ctaText}
+						<a href={content.hero.ctaLink} class="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-3 text-base font-semibold text-primary-foreground hover:bg-primary/90 transition-colors">
+							{content.hero.ctaText} <ArrowRight size={18} />
+						</a>
+					{/if}
 				</div>
-				${p.image ? `<div class="relative"><img src="${esc(p.image)}" alt="${esc(p.title)}" class="w-full rounded-3xl object-cover shadow-2xl" /></div>` : ''}
+				{#if content.hero.image}
+					<div class="relative">
+						<img src={content.hero.image} alt={content.hero.title} class="w-full rounded-3xl object-cover shadow-2xl" />
+					</div>
+				{/if}
 			</div>
 		</div>
 	</section>`;
@@ -48,9 +56,13 @@ function genHeroSecondary(p: any): string {
 	<section class="py-16 lg:py-20 bg-muted/40 border-y border-border/50">
 		<div class="container mx-auto px-4 md:px-6">
 			<div class="max-w-3xl ${alignClass}">
-				<h2 class="text-3xl font-extrabold tracking-tight md:text-4xl lg:text-5xl mb-4">${esc(p.title)}</h2>
-				<p class="text-lg text-muted-foreground leading-relaxed mb-6">${esc(p.subtitle)}</p>
-				${p.ctaText ? `<a href="${esc(p.ctaLink)}" class="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-3 font-semibold text-primary-foreground hover:bg-primary/90 transition-colors">${esc(p.ctaText)} <ArrowRight size={16} /></a>` : ''}
+				<h2 class="text-3xl font-extrabold tracking-tight md:text-4xl lg:text-5xl mb-4">{content.heroSecondary.title}</h2>
+				<p class="text-lg text-muted-foreground leading-relaxed mb-6">{content.heroSecondary.subtitle}</p>
+				{#if content.heroSecondary.ctaText}
+					<a href={content.heroSecondary.ctaLink} class="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-3 font-semibold text-primary-foreground hover:bg-primary/90 transition-colors">
+						{content.heroSecondary.ctaText} <ArrowRight size={16} />
+					</a>
+				{/if}
 			</div>
 		</div>
 	</section>`;
@@ -58,7 +70,10 @@ function genHeroSecondary(p: any): string {
 
 function genImageText(p: any): string {
 	const isRight = p.imagePosition === 'right';
-	const imgBlock = `<div class="relative"><img src="${esc(p.image)}" alt="${esc(p.title)}" class="w-full rounded-3xl object-cover shadow-xl" /></div>`;
+	const imgBlock = `
+				<div class="relative ${!isRight ? 'order-last lg:order-first' : ''}">
+					<img src={content.imageText.image} alt={content.imageText.title} class="w-full rounded-3xl object-cover shadow-xl" />
+				</div>`;
 	return `
 	<!-- Image & Text Section -->
 	<section class="py-20 lg:py-24">
@@ -66,9 +81,13 @@ function genImageText(p: any): string {
 			<div class="grid gap-12 lg:grid-cols-2 lg:items-center">
 				${!isRight ? imgBlock : ''}
 				<div class="space-y-6">
-					<h2 class="text-3xl font-extrabold tracking-tight md:text-4xl">${esc(p.title)}</h2>
-					<div class="prose prose-lg dark:prose-invert text-muted-foreground">${p.content || ''}</div>
-					${p.ctaText ? `<a href="${esc(p.ctaLink)}" class="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 font-semibold text-primary-foreground hover:bg-primary/90 transition-colors">${esc(p.ctaText)} <ArrowRight size={16} /></a>` : ''}
+					<h2 class="text-3xl font-extrabold tracking-tight md:text-4xl">{content.imageText.title}</h2>
+					<div class="prose prose-lg dark:prose-invert text-muted-foreground">{@html content.imageText.content}</div>
+					{#if content.imageText.ctaText}
+						<a href={content.imageText.ctaLink} class="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 font-semibold text-primary-foreground hover:bg-primary/90 transition-colors">
+							{content.imageText.ctaText} <ArrowRight size={16} />
+						</a>
+					{/if}
 				</div>
 				${isRight ? imgBlock : ''}
 			</div>
@@ -84,13 +103,43 @@ function genContact(p: any): string {
 			<div class="grid gap-16 lg:grid-cols-2 lg:items-start">
 				<div class="space-y-8">
 					<div>
-						<h2 class="text-3xl font-extrabold tracking-tight md:text-4xl mb-4">${esc(p.title)}</h2>
-						<p class="text-lg text-muted-foreground leading-relaxed">${esc(p.subtitle)}</p>
+						<h2 class="text-3xl font-extrabold tracking-tight md:text-4xl mb-4">{content.contact.title}</h2>
+						<p class="text-lg text-muted-foreground leading-relaxed">{content.contact.subtitle}</p>
 					</div>
 					<div class="space-y-5">
-						${p.email ? `<div class="flex items-center gap-4"><div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/10 text-primary"><Mail size={20} /></div><div><p class="text-xs text-muted-foreground uppercase tracking-wider mb-0.5">Email</p><a href="mailto:${esc(p.email)}" class="font-medium hover:text-primary transition-colors">${esc(p.email)}</a></div></div>` : ''}
-						${p.phone ? `<div class="flex items-center gap-4"><div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/10 text-primary"><Phone size={20} /></div><div><p class="text-xs text-muted-foreground uppercase tracking-wider mb-0.5">Telepon</p><a href="tel:${esc(p.phone)}" class="font-medium hover:text-primary transition-colors">${esc(p.phone)}</a></div></div>` : ''}
-						${p.address ? `<div class="flex items-center gap-4"><div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/10 text-primary"><MapPin size={20} /></div><div><p class="text-xs text-muted-foreground uppercase tracking-wider mb-0.5">Alamat</p><p class="font-medium">${esc(p.address)}</p></div></div>` : ''}
+						{#if content.contact.email}
+							<div class="flex items-center gap-4">
+								<div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+									<Mail size={20} />
+								</div>
+								<div>
+									<p class="text-xs text-muted-foreground uppercase tracking-wider mb-0.5">Email</p>
+									<a href="mailto:{content.contact.email}" class="font-medium hover:text-primary transition-colors">{content.contact.email}</a>
+								</div>
+							</div>
+						{/if}
+						{#if content.contact.phone}
+							<div class="flex items-center gap-4">
+								<div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+									<Phone size={20} />
+								</div>
+								<div>
+									<p class="text-xs text-muted-foreground uppercase tracking-wider mb-0.5">Telepon</p>
+									<a href="tel:{content.contact.phone}" class="font-medium hover:text-primary transition-colors">{content.contact.phone}</a>
+								</div>
+							</div>
+						{/if}
+						{#if content.contact.address}
+							<div class="flex items-center gap-4">
+								<div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+									<MapPin size={20} />
+								</div>
+								<div>
+									<p class="text-xs text-muted-foreground uppercase tracking-wider mb-0.5">Alamat</p>
+									<p class="font-medium">{content.contact.address}</p>
+								</div>
+							</div>
+						{/if}
 					</div>
 				</div>
 				<div class="rounded-3xl border border-border/60 bg-card p-8 shadow-sm space-y-5">
@@ -105,24 +154,25 @@ function genContact(p: any): string {
 }
 
 function genFaq(p: any): string {
-	const items = (p.items || []).map((item: any) => `
-					<details class="rounded-2xl border border-border/60 bg-card px-6 overflow-hidden group">
-						<summary class="py-5 font-semibold text-base cursor-pointer list-none flex justify-between items-center hover:text-primary transition-colors">
-							${esc(item.question)}
-							<ChevronDown size={16} class="text-muted-foreground transition-transform group-open:rotate-180" />
-						</summary>
-						<div class="pb-5 text-muted-foreground leading-relaxed">${esc(item.answer)}</div>
-					</details>`).join('\n');
 	return `
 	<!-- FAQ Section -->
 	<section class="py-20 lg:py-24">
 		<div class="container mx-auto px-4 md:px-6">
 			<div class="mx-auto max-w-3xl">
 				<div class="text-center mb-12">
-					<h2 class="text-3xl font-extrabold tracking-tight md:text-4xl mb-4">${esc(p.title)}</h2>
-					<p class="text-lg text-muted-foreground">${esc(p.subtitle)}</p>
+					<h2 class="text-3xl font-extrabold tracking-tight md:text-4xl mb-4">{content.faq.title}</h2>
+					<p class="text-lg text-muted-foreground">{content.faq.subtitle}</p>
 				</div>
-				<div class="space-y-3">${items}
+				<div class="space-y-3">
+					{#each content.faq.items as item}
+						<details class="rounded-2xl border border-border/60 bg-card px-6 overflow-hidden group">
+							<summary class="py-5 font-semibold text-base cursor-pointer list-none flex justify-between items-center hover:text-primary transition-colors">
+								{item.question}
+								<ChevronDown size={16} class="text-muted-foreground transition-transform group-open:rotate-180" />
+							</summary>
+							<div class="pb-5 text-muted-foreground leading-relaxed">{item.answer}</div>
+						</details>
+					{/each}
 				</div>
 			</div>
 		</div>
@@ -135,11 +185,19 @@ function genCta(p: any): string {
 	<!-- CTA Section -->
 	<section class="py-20 lg:py-28 ${bg}">
 		<div class="container mx-auto px-4 md:px-6 text-center">
-			<h2 class="text-3xl font-extrabold tracking-tight md:text-4xl lg:text-5xl mb-5 max-w-3xl mx-auto">${esc(p.title)}</h2>
-			<p class="text-lg md:text-xl opacity-80 mb-10 max-w-2xl mx-auto leading-relaxed">${esc(p.subtitle)}</p>
+			<h2 class="text-3xl font-extrabold tracking-tight md:text-4xl lg:text-5xl mb-5 max-w-3xl mx-auto">{content.cta.title}</h2>
+			<p class="text-lg md:text-xl opacity-80 mb-10 max-w-2xl mx-auto leading-relaxed">{content.cta.subtitle}</p>
 			<div class="flex flex-col sm:flex-row gap-4 justify-center">
-				${p.ctaText ? `<a href="${esc(p.ctaLink)}" class="inline-flex items-center justify-center gap-2 rounded-full bg-background/20 px-8 py-3 text-base font-semibold hover:bg-background/30 transition-colors border border-white/20">${esc(p.ctaText)} <ArrowRight size={18} /></a>` : ''}
-				${p.ctaSecondaryText ? `<a href="${esc(p.ctaSecondaryLink)}" class="inline-flex items-center justify-center gap-2 rounded-full px-8 py-3 text-base font-semibold border border-current/40 hover:bg-white/10 transition-colors">${esc(p.ctaSecondaryText)}</a>` : ''}
+				{#if content.cta.ctaText}
+					<a href={content.cta.ctaLink} class="inline-flex items-center justify-center gap-2 rounded-full bg-background/20 px-8 py-3 text-base font-semibold hover:bg-background/30 transition-colors border border-white/20">
+						{content.cta.ctaText} <ArrowRight size={18} />
+					</a>
+				{/if}
+				{#if content.cta.ctaSecondaryText}
+					<a href={content.cta.ctaSecondaryLink} class="inline-flex items-center justify-center gap-2 rounded-full px-8 py-3 text-base font-semibold border border-current/40 hover:bg-white/10 transition-colors">
+						{content.cta.ctaSecondaryText}
+					</a>
+				{/if}
 			</div>
 		</div>
 	</section>`;
@@ -152,14 +210,18 @@ function genPostsTemplate(p: any): string {
 		<div class="container mx-auto px-4 md:px-6">
 			<div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12">
 				<div>
-					<h2 class="text-3xl font-extrabold tracking-tight md:text-4xl mb-3">${esc(p.title)}</h2>
-					<p class="text-lg text-muted-foreground max-w-xl">${esc(p.subtitle)}</p>
+					<h2 class="text-3xl font-extrabold tracking-tight md:text-4xl mb-3">{content.posts.title}</h2>
+					<p class="text-lg text-muted-foreground max-w-xl">{content.posts.subtitle}</p>
 				</div>
-				${p.ctaText ? `<a href="${esc(p.ctaLink)}" class="inline-flex items-center gap-2 rounded-full border border-border px-6 py-2 font-medium hover:bg-muted transition-colors shrink-0">${esc(p.ctaText)} <ArrowRight size={16} /></a>` : ''}
+				{#if content.posts.ctaText}
+					<a href={content.posts.ctaLink} class="inline-flex items-center gap-2 rounded-full border border-border px-6 py-2 font-medium hover:bg-muted transition-colors shrink-0">
+						{content.posts.ctaText} <ArrowRight size={16} />
+					</a>
+				{/if}
 			</div>
 			{#if data.posts && data.posts.length > 0}
 				<div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-${Math.min(p.count || 3, 3)}">
-					{#each data.posts.slice(0, ${p.count || 3}) as post}
+					{#each data.posts.slice(0, content.posts.count) as post}
 						<a href="/artikel/{post.slug}" class="group flex flex-col rounded-3xl border border-border/60 bg-card overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
 							{#if post.cover}
 								<div class="aspect-video overflow-hidden">
@@ -211,9 +273,19 @@ export function generateSvelteFile(pageData: any, sections: any[]): string {
 		? `\timport { ${icons.join(', ')} } from 'lucide-svelte';\n` : '';
 
 	const bodyParts = sections.map(inlineSection).join('\n');
+    
+    // Generate the initial state object holding all the content
+    const contentStateObj: Record<string, any> = {};
+    sections.forEach(s => {
+        let key = s.type;
+        if (key === 'hero-secondary') key = 'heroSecondary';
+        if (key === 'image-text') key = 'imageText';
+        contentStateObj[key] = s.props || {};
+    });
 
 	const script = `<script lang="ts">
-${iconImport}${hasPosts ? `\t// data.posts is provided by +page.server.ts\n\tlet { data } = $props();\n` : ''}	// Page: ${pageData.title}
+${iconImport}${hasPosts ? `\t// data.posts is provided by +page.server.ts\n\tlet { data } = $props();\n\n` : ''}	// Editable content object
+	let content = $state(${JSON.stringify(contentStateObj, null, '\t\t').replace(/\}$/, '\t}')});
 </script>
 
 `;
@@ -252,6 +324,121 @@ export const load: PageServerLoad = async () => {
 `;
 }
 
+function genHeroHtml(p: any): string {
+	return `
+	<section class="relative overflow-hidden bg-background py-20 lg:py-32">
+		<div class="container mx-auto px-4 md:px-6">
+			<div class="grid gap-12 lg:grid-cols-2 lg:items-center">
+				<div class="space-y-8">
+					<h1 class="text-4xl font-extrabold tracking-tight md:text-5xl lg:text-6xl">${esc(p.title)}</h1>
+					<p class="text-xl text-muted-foreground leading-relaxed">${esc(p.subtitle)}</p>
+					${p.ctaText ? `<a href="${esc(p.ctaLink)}" class="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-3 text-base font-semibold text-primary-foreground hover:bg-primary/90 transition-colors">${esc(p.ctaText)} <ArrowRight size={18} /></a>` : ''}
+				</div>
+				${p.image ? `<div class="relative"><img src="${esc(p.image)}" alt="${esc(p.title)}" class="w-full rounded-3xl object-cover shadow-2xl" /></div>` : ''}
+			</div>
+		</div>
+	</section>`;
+}
+
+function genHeroSecondaryHtml(p: any): string {
+	const alignClass = p.align === 'right' ? 'ml-auto text-right' : p.align === 'left' ? 'text-left' : 'mx-auto text-center';
+	return `
+	<section class="py-16 lg:py-20 bg-muted/40 border-y border-border/50">
+		<div class="container mx-auto px-4 md:px-6">
+			<div class="max-w-3xl ${alignClass}">
+				<h2 class="text-3xl font-extrabold tracking-tight md:text-4xl lg:text-5xl mb-4">${esc(p.title)}</h2>
+				<p class="text-lg text-muted-foreground leading-relaxed mb-6">${esc(p.subtitle)}</p>
+				${p.ctaText ? `<a href="${esc(p.ctaLink)}" class="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-3 font-semibold text-primary-foreground hover:bg-primary/90 transition-colors">${esc(p.ctaText)} <ArrowRight size={16} /></a>` : ''}
+			</div>
+		</div>
+	</section>`;
+}
+
+function genImageTextHtml(p: any): string {
+	const isRight = p.imagePosition === 'right';
+	const imgBlock = `<div class="relative ${!isRight ? 'order-last lg:order-first' : ''}"><img src="${esc(p.image)}" alt="${esc(p.title)}" class="w-full rounded-3xl object-cover shadow-xl" /></div>`;
+	return `
+	<section class="py-20 lg:py-24">
+		<div class="container mx-auto px-4 md:px-6">
+			<div class="grid gap-12 lg:grid-cols-2 lg:items-center">
+				${!isRight ? imgBlock : ''}
+				<div class="space-y-6">
+					<h2 class="text-3xl font-extrabold tracking-tight md:text-4xl">${esc(p.title)}</h2>
+					<div class="prose prose-lg dark:prose-invert text-muted-foreground">${p.content || ''}</div>
+					${p.ctaText ? `<a href="${esc(p.ctaLink)}" class="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 font-semibold text-primary-foreground hover:bg-primary/90 transition-colors">${esc(p.ctaText)} <ArrowRight size={16} /></a>` : ''}
+				</div>
+				${isRight ? imgBlock : ''}
+			</div>
+		</div>
+	</section>`;
+}
+
+function genContactHtml(p: any): string {
+	return `
+	<section class="py-20 lg:py-24">
+		<div class="container mx-auto px-4 md:px-6">
+			<div class="grid gap-16 lg:grid-cols-2 lg:items-start">
+				<div class="space-y-8">
+					<div>
+						<h2 class="text-3xl font-extrabold tracking-tight md:text-4xl mb-4">${esc(p.title)}</h2>
+						<p class="text-lg text-muted-foreground leading-relaxed">${esc(p.subtitle)}</p>
+					</div>
+					<div class="space-y-5">
+						${p.email ? `<div class="flex items-center gap-4"><div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/10 text-primary"><Mail size={20} /></div><div><p class="text-xs text-muted-foreground uppercase tracking-wider mb-0.5">Email</p><a href="mailto:${esc(p.email)}" class="font-medium hover:text-primary transition-colors">${esc(p.email)}</a></div></div>` : ''}
+						${p.phone ? `<div class="flex items-center gap-4"><div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/10 text-primary"><Phone size={20} /></div><div><p class="text-xs text-muted-foreground uppercase tracking-wider mb-0.5">Telepon</p><a href="tel:${esc(p.phone)}" class="font-medium hover:text-primary transition-colors">${esc(p.phone)}</a></div></div>` : ''}
+						${p.address ? `<div class="flex items-center gap-4"><div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/10 text-primary"><MapPin size={20} /></div><div><p class="text-xs text-muted-foreground uppercase tracking-wider mb-0.5">Alamat</p><p class="font-medium">${esc(p.address)}</p></div></div>` : ''}
+					</div>
+				</div>
+				<div class="rounded-3xl border border-border/60 bg-card p-8 shadow-sm space-y-5">
+					<div class="space-y-2"><label class="text-sm font-medium">Nama Lengkap</label><input type="text" placeholder="Nama kamu" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm" /></div>
+					<div class="space-y-2"><label class="text-sm font-medium">Email</label><input type="email" placeholder="email@kamu.com" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm" /></div>
+					<div class="space-y-2"><label class="text-sm font-medium">Pesan</label><textarea placeholder="Tulis pesan kamu..." rows="5" class="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm"></textarea></div>
+					<button type="button" class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 font-semibold text-primary-foreground hover:bg-primary/90 transition-colors"><Send size={16} /> Kirim Pesan</button>
+				</div>
+			</div>
+		</div>
+	</section>`;
+}
+
+function genFaqHtml(p: any): string {
+	const items = (p.items || []).map((item: any) => `
+					<details class="rounded-2xl border border-border/60 bg-card px-6 overflow-hidden group">
+						<summary class="py-5 font-semibold text-base cursor-pointer list-none flex justify-between items-center hover:text-primary transition-colors">
+							${esc(item.question)}
+							<ChevronDown size={16} class="text-muted-foreground transition-transform group-open:rotate-180" />
+						</summary>
+						<div class="pb-5 text-muted-foreground leading-relaxed">${esc(item.answer)}</div>
+					</details>`).join('\n');
+	return `
+	<section class="py-20 lg:py-24">
+		<div class="container mx-auto px-4 md:px-6">
+			<div class="mx-auto max-w-3xl">
+				<div class="text-center mb-12">
+					<h2 class="text-3xl font-extrabold tracking-tight md:text-4xl mb-4">${esc(p.title)}</h2>
+					<p class="text-lg text-muted-foreground">${esc(p.subtitle)}</p>
+				</div>
+				<div class="space-y-3">${items}
+				</div>
+			</div>
+		</div>
+	</section>`;
+}
+
+function genCtaHtml(p: any): string {
+	const bg = p.variant === 'dark' ? 'bg-foreground text-background' : p.variant === 'light' ? 'bg-muted text-foreground' : 'bg-gradient-to-br from-primary to-primary/70 text-primary-foreground';
+	return `
+	<section class="py-20 lg:py-28 ${bg}">
+		<div class="container mx-auto px-4 md:px-6 text-center">
+			<h2 class="text-3xl font-extrabold tracking-tight md:text-4xl lg:text-5xl mb-5 max-w-3xl mx-auto">${esc(p.title)}</h2>
+			<p class="text-lg md:text-xl opacity-80 mb-10 max-w-2xl mx-auto leading-relaxed">${esc(p.subtitle)}</p>
+			<div class="flex flex-col sm:flex-row gap-4 justify-center">
+				${p.ctaText ? `<a href="${esc(p.ctaLink)}" class="inline-flex items-center justify-center gap-2 rounded-full bg-background/20 px-8 py-3 text-base font-semibold hover:bg-background/30 transition-colors border border-white/20">${esc(p.ctaText)} <ArrowRight size={18} /></a>` : ''}
+				${p.ctaSecondaryText ? `<a href="${esc(p.ctaSecondaryLink)}" class="inline-flex items-center justify-center gap-2 rounded-full px-8 py-3 text-base font-semibold border border-current/40 hover:bg-white/10 transition-colors">${esc(p.ctaSecondaryText)}</a>` : ''}
+			</div>
+		</div>
+	</section>`;
+}
+
 export function generateHtmlPreview(pageData: any, sections: any[]): string {
 	// For HTML export, replace Lucide components with inline SVGs (contact icons only)
 	const htmlContactFix = (html: string) =>
@@ -267,12 +454,12 @@ export function generateHtmlPreview(pageData: any, sections: any[]): string {
 		const p = s.props || {};
 		let html = '';
 		switch (s.type) {
-			case 'hero':           html = genHero(p); break;
-			case 'hero-secondary': html = genHeroSecondary(p); break;
-			case 'image-text':     html = genImageText(p); break;
-			case 'contact':        html = genContact(p); break;
-			case 'faq':            html = genFaq(p); break;
-			case 'cta':            html = genCta(p); break;
+			case 'hero':           html = genHeroHtml(p); break;
+			case 'hero-secondary': html = genHeroSecondaryHtml(p); break;
+			case 'image-text':     html = genImageTextHtml(p); break;
+			case 'contact':        html = genContactHtml(p); break;
+			case 'faq':            html = genFaqHtml(p); break;
+			case 'cta':            html = genCtaHtml(p); break;
 			case 'posts':          html = `<section class="py-20 text-center text-muted-foreground border-2 border-dashed m-8 rounded-3xl">[Artikel Terbaru — membutuhkan server data]</section>`; break;
 			default: html = '';
 		}

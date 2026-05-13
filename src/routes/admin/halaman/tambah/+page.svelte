@@ -26,7 +26,14 @@
 	let title = $state('');
 	let slug = $state('');
 	let status = $state('draft');
-	let sections = $state([]);
+	
+	interface Section {
+		id: string;
+		type: string;
+		props: any;
+	}
+
+	let sections = $state<Section[]>([]);
 	
 	let activeTab = $state("editor");
 
@@ -58,7 +65,7 @@
 	}
 
 	function removeSection(id: string) {
-		sections = sections.filter(s => s.id !== id);
+		sections = sections.filter((s: Section) => s.id !== id);
 	}
 
 	function handleDndConsider(e: any) {
