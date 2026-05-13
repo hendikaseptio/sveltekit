@@ -2,21 +2,58 @@ import { db } from '$lib/server/db';
 import { setting, page, menu } from '$lib/server/db/schema';
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
+import { exec } from 'child_process';
+import { promisify } from 'util';
+import { env as dynamicEnv } from '$env/dynamic/private';
+
+const execPromise = promisify(exec);
 
 export const load: PageServerLoad = async () => {
-	// If settings already exist, redirect to admin dashboard
-	const existingSettings = await db.select().from(setting).limit(1);
-	if (existingSettings.length > 0) {
-		// Only redirect if there's actual data
-		if (existingSettings[0].siteName !== 'My SvelteKit Blog') {
-			throw redirect(303, '/admin');
+	let needsInit = false;
+	try {
+		// Check if setting table exists
+		await db.select().from(setting).limit(1);
+	} catch (e) {
+		// Table doesn't exist
+		needsInit = true;
+	}
+
+	if (!needsInit) {
+		try {
+			const existingSettings = await db.select().from(setting).limit(1);
+			if (existingSettings.length > 0 && existingSettings[0].siteName !== 'My SvelteKit Blog') {
+				throw redirect(303, '/admin');
+			}
+		} catch (e: any) {
+			if (e.status === 303) throw e;
+			needsInit = true;
 		}
 	}
-	return {};
+
+	return { needsInit };
 };
 
 export const actions: Actions = {
-	default: async ({ request }) => {
+	initDb: async () => {
+		try {
+			console.log('🚀 Running database initialization with force...');
+			
+			const env = { ...process.env, DATABASE_URL: dynamicEnv.DATABASE_URL };
+			
+			// Added --force to ensure it doesn't wait for confirmation
+			const { stdout, stderr } = await execPromise('npx drizzle-kit push --force', { env });
+			
+			console.log('Stdout:', stdout);
+			if (stderr) console.error('Stderr:', stderr);
+			
+			return { success: true, message: 'Database berhasil diinisialisasi!' };
+		} catch (e: any) {
+			console.error('Database init failed:', e);
+			const errorMsg = e.stderr || e.stdout || e.message;
+			return { success: false, message: 'Gagal inisialisasi database: ' + errorMsg };
+		}
+	},
+	setup: async ({ request }) => {
 		const formData = await request.formData();
 		const siteName = formData.get('siteName') as string;
 		const siteDescription = formData.get('siteDescription') as string;
@@ -36,7 +73,6 @@ export const actions: Actions = {
 		});
 
 		// 2. Create Pages and Menus
-		// Define default sections for different page types
 		const pageTemplates: Record<string, any> = {
 			'tentang-kami': [
 				{ id: '1', type: 'hero-secondary', props: { title: 'Tentang Kami', subtitle: 'Mengenal lebih dekat siapa kami.', align: 'center' } },
@@ -47,32 +83,28 @@ export const actions: Actions = {
 				{ id: '2', type: 'contact', props: { title: 'Informasi Kontak', subtitle: 'Silakan hubungi kami melalui saluran berikut.', email: 'hello@example.com', phone: '+62 812-3456-7890', address: 'Jakarta, Indonesia' } }
 			],
 			'harga': [
-				{ id: '1', type: 'hero-secondary', props: { title: 'Paket Harga', subtitle: 'Pilih paket yang sesuai dengan kebutuhan Anda.', align: 'center' } },
-				{ id: '2', type: 'faq', props: { title: 'Pertanyaan Umum', subtitle: 'Jawaban atas pertanyaan yang sering diajukan.', items: [{ question: 'Berapa biayanya?', answer: 'Tergantung paket yang dipilih.' }] } }
+				{ id: '1', type: 'hero-secondary', props: { title: 'Paket Harga', subtitle: 'Pilih paket yang sesuai dengan kebutuhan Anda.', align: 'center' } }
 			],
 			'profil-proyek': [
-				{ id: '1', type: 'hero-secondary', props: { title: 'Profil Proyek', subtitle: 'Daftar proyek unggulan yang telah kami selesaikan.', align: 'center' } },
-				{ id: '2', type: 'posts', props: { title: 'Proyek Terbaru', subtitle: 'Intip apa yang sedang kami kerjakan.', count: 3 } }
+				{ id: '1', type: 'hero-secondary', props: { title: 'Profil Proyek', subtitle: 'Daftar proyek unggulan yang telah kami selesaikan.', align: 'center' } }
 			],
 			'karya': [
-				{ id: '1', type: 'hero-secondary', props: { title: 'Portofolio Karya', subtitle: 'Koleksi karya terbaik kami.', align: 'center' } },
-				{ id: '2', type: 'cta', props: { title: 'Ingin Memulai Proyek?', subtitle: 'Mari bekerja sama menciptakan karya luar biasa.', ctaText: 'Hubungi Kami', ctaLink: '/kontak' } }
+				{ id: '1', type: 'hero-secondary', props: { title: 'Portofolio Karya', subtitle: 'Koleksi karya terbaik kami.', align: 'center' } }
 			]
 		};
 
-		// Create Home Menu first
+		// Create Home Menu
 		await db.insert(menu).values({
 			label: 'Beranda',
 			url: '/',
 			order: 0,
 			isExternal: false
-		});
+		}).onConflictDoNothing();
 
-		// Create selected pages and their menus
+		// Create selected pages and menus
 		for (const pageSlug of selectedPages) {
 			const label = pageSlug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 			
-			// Create Page
 			await db.insert(page).values({
 				title: label,
 				slug: pageSlug,
@@ -81,22 +113,20 @@ export const actions: Actions = {
 				status: 'published'
 			}).onConflictDoNothing();
 
-			// Create Menu
 			await db.insert(menu).values({
 				label: label,
 				url: `/p/${pageSlug}`,
 				order: selectedPages.indexOf(pageSlug) + 1,
 				isExternal: false
-			});
+			}).onConflictDoNothing();
 		}
 
-		// Also add "Artikel" if not already in menus
 		await db.insert(menu).values({
 			label: 'Artikel',
 			url: '/artikel',
 			order: 10,
 			isExternal: false
-		});
+		}).onConflictDoNothing();
 
 		throw redirect(303, '/admin');
 	}
