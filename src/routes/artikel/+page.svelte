@@ -1,9 +1,15 @@
 <script lang="ts">
 	import PostCard from '$lib/components/custom/post-card.svelte';
 	import * as Breadcrumb from '$lib/components/ui/breadcrumb';
+	import SEO from "$lib/components/SEO.svelte";
 
 	let { data } = $props();
 </script>
+
+<SEO 
+	title="Blog | Kumpulan Artikel Terbaru" 
+	description="Temukan wawasan terbaru tentang pengembangan web, desain, dan teknologi melalui artikel pilihan kami."
+/>
 
 <div class="container mx-auto px-4 py-8">
 	<div class="mb-8">

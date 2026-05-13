@@ -9,6 +9,7 @@
 		UserRound,
 		Send
 	} from "lucide-svelte";
+	import SEO from "$lib/components/SEO.svelte";
 
 	const team = [
 		{
@@ -31,6 +32,11 @@
 		}
 	];
 </script>
+
+<SEO 
+	title="Tentang Kami | BlogModern" 
+	description="BlogModern adalah platform yang didedikasikan untuk berbagi wawasan terbaru seputar pengembangan web, desain antarmuka, dan inovasi teknologi terkini."
+/>
 
 <div class="container mx-auto px-4 py-12 md:px-6">
 	<!-- Hero Section -->
@@ -122,7 +128,7 @@
 		<p class="mx-auto mb-8 max-w-xl opacity-90">
 			Kami selalu senang mendengar dari Anda. Baik itu saran, kritik, atau ajakan kerja sama.
 		</p>
-		<Button variant="secondary" size="lg" class="rounded-full px-8">
+		<Button variant="secondary" size="lg" class="rounded-full px-8" href="/kontak">
 			Hubungi Kami
 		</Button>
 	</section>

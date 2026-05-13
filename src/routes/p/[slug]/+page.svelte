@@ -1,13 +1,15 @@
 <script lang="ts">
 	import SectionRenderer from '$lib/components/sections/SectionRenderer.svelte';
+	import SEO from "$lib/components/SEO.svelte";
 
 	let { data } = $props();
 	const sections = $derived(data.page.sections ? JSON.parse(data.page.sections) : []);
 </script>
 
-<svelte:head>
-	<title>{data.page.title}</title>
-</svelte:head>
+<SEO 
+	title={data.page.title} 
+	description={data.page.content.substring(0, 160).replace(/<[^>]*>/g, '') || "Lihat halaman ini di website kami."}
+/>
 
 <div class="min-h-screen pb-20">
 	{#each sections as section (section.id)}

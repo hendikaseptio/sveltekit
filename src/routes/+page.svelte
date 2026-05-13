@@ -9,6 +9,7 @@
 		Calendar,
 		Mail
 	} from "lucide-svelte";
+	import SEO from "$lib/components/SEO.svelte";
 
 	let { data } = $props();
 
@@ -26,6 +27,12 @@
 		});
 	}
 </script>
+
+<SEO 
+	title="Home | Insights for the Digital Frontier" 
+	description="Explore the latest trends in technology, design, and modern web development through our curated articles."
+	image="/images/hero.png"
+/>
 
 <div class="container mx-auto px-4 py-8 md:px-6">
 	<!-- Hero Section -->

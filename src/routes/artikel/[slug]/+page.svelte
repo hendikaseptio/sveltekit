@@ -4,9 +4,17 @@
 	import { Badge } from '$lib/components/ui/badge';
 	import * as Card from '$lib/components/ui/card';
 	import { ArrowRight, Calendar } from "lucide-svelte";
+	import SEO from "$lib/components/SEO.svelte";
 
 	let { data } = $props();
 </script>
+
+<SEO 
+	title={data.article.title} 
+	description={data.article.excerpt || "Baca artikel selengkapnya di website kami."}
+	image={data.article.cover || "/images/hero.png"}
+	type="article"
+/>
 
 <div class="container mx-auto px-4 py-8 lg:px-6">
 	<div class="mb-8">
