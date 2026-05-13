@@ -11,15 +11,9 @@
 		Trash2, 
 		ChevronDown, 
 		ChevronUp,
-		Eye,
 		Settings2,
 		Layout,
-		Save,
-		Download,
-		X,
-		Code,
-		FileCode,
-		Globe
+		Save
 	} from "lucide-svelte";
 	import SectionRenderer from "$lib/components/sections/SectionRenderer.svelte";
 	import SectionEditor from "$lib/components/sections/SectionEditor.svelte";
@@ -122,46 +116,6 @@
 	}
 
 	const flipDurationMs = 300;
-
-	// --- Export ---
-	let showExport = $state(false);
-	let exportTab = $state<'svelte'|'server'|'html'>('svelte');
-	let exportCode = $state('');
-	let exportLoading = $state(false);
-	let hasPosts = $derived(sections.some((s: any) => s.type === 'posts'));
-
-	async function openExport() {
-		showExport = true;
-		await loadExportCode(exportTab);
-	}
-
-	async function loadExportCode(tab: string) {
-		exportLoading = true;
-		try {
-			const res = await fetch(`/admin/halaman/${data.page.id}/export?type=${tab}`);
-			exportCode = await res.text();
-		} finally {
-			exportLoading = false;
-		}
-	}
-
-	async function switchExportTab(tab: 'svelte'|'server'|'html') {
-		exportTab = tab;
-		await loadExportCode(tab);
-	}
-
-	function downloadExport() {
-		const filename = exportTab === 'svelte' ? '+page.svelte' : exportTab === 'server' ? '+page.server.ts' : `${slug}.html`;
-		const blob = new Blob([exportCode], { type: 'text/plain' });
-		const a = document.createElement('a');
-		a.href = URL.createObjectURL(blob);
-		a.download = filename;
-		a.click();
-	}
-
-	function copyExport() {
-		navigator.clipboard.writeText(exportCode);
-	}
 </script>
 
 <div class="h-screen flex flex-col overflow-hidden bg-muted/30">
@@ -200,12 +154,9 @@
 				</select>
 				<Button type="submit" size="sm" class="gap-2">
 					<Save size={16} />
-					Simpan
+					Simpan Halaman
 				</Button>
 			</form>
-			<Button variant="outline" size="sm" class="gap-2" onclick={openExport}>
-				<Download size={16} /> Export
-			</Button>
 		</div>
 	</header>
 
@@ -336,103 +287,6 @@
 		{/if}
 	</main>
 </div>
-
-<!-- Export Modal -->
-{#if showExport}
-	<!-- svelte-ignore a11y_click_events_have_key_events -->
-	<!-- svelte-ignore a11y_no_static_element_interactions -->
-	<div 
-		class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" 
-		onclick={() => showExport = false}
-	>
-		<div 
-			class="relative w-full max-w-4xl max-h-[90vh] flex flex-col rounded-2xl border border-border bg-background shadow-2xl" 
-			onclick={(e) => e.stopPropagation()}
-		>
-			<!-- Header -->
-			<div class="flex items-center justify-between px-6 py-4 border-b shrink-0">
-				<div>
-					<h2 class="text-lg font-bold">Export Halaman</h2>
-					<p class="text-xs text-muted-foreground mt-0.5">Unduh source code siap pakai untuk project SvelteKit lain</p>
-				</div>
-				<button onclick={() => showExport = false} class="p-2 rounded-lg hover:bg-muted transition-colors">
-					<X size={18} />
-				</button>
-			</div>
-
-			<!-- Tabs -->
-			<div class="flex gap-1 px-6 pt-4 shrink-0">
-				<button
-					onclick={() => switchExportTab('svelte')}
-					class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors {exportTab === 'svelte' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted text-muted-foreground'}"
-				>
-					<Code size={14} /> +page.svelte
-				</button>
-				{#if hasPosts}
-				<button
-					onclick={() => switchExportTab('server')}
-					class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors {exportTab === 'server' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted text-muted-foreground'}"
-				>
-					<FileCode size={14} /> +page.server.ts
-				</button>
-				{/if}
-				<button
-					onclick={() => switchExportTab('html')}
-					class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors {exportTab === 'html' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted text-muted-foreground'}"
-				>
-					<Globe size={14} /> HTML Standalone
-				</button>
-			</div>
-
-			<!-- Info banner per tab -->
-			<div class="px-6 pt-3 shrink-0">
-				{#if exportTab === 'svelte'}
-					<div class="rounded-lg bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 px-4 py-3 text-xs text-blue-700 dark:text-blue-300">
-						📄 Copy file ini sebagai <strong>+page.svelte</strong> di project SvelteKit kamu. {hasPosts ? 'Perlu digunakan bersama +page.server.ts.' : 'Tidak butuh server file — halaman ini sepenuhnya statis.'}
-					</div>
-				{:else if exportTab === 'server'}
-					<div class="rounded-lg bg-purple-50 dark:bg-purple-950/30 border border-purple-200 dark:border-purple-800 px-4 py-3 text-xs text-purple-700 dark:text-purple-300">
-						⚙️ Copy file ini sebagai <strong>+page.server.ts</strong> di folder yang sama with +page.svelte. Sesuaikan import path jika skema DB kamu berbeda.
-					</div>
-				{:else}
-					<div class="rounded-lg bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-800 px-4 py-3 text-xs text-green-700 dark:text-green-300">
-						🌐 HTML standalone with Tailwind CDN — buka langsung di browser atau host di mana saja tanpa build step.
-					</div>
-				{/if}
-			</div>
-
-			<!-- Code viewer -->
-			<div class="flex-1 overflow-hidden px-6 py-3">
-				{#if exportLoading}
-					<div class="flex items-center justify-center h-48 text-muted-foreground text-sm">Memuat kode...</div>
-				{:else}
-					<pre class="h-full overflow-auto rounded-xl bg-zinc-950 dark:bg-zinc-900 text-zinc-100 p-5 text-xs leading-relaxed font-mono border border-zinc-800">{exportCode}</pre>
-				{/if}
-			</div>
-
-			<!-- Footer actions -->
-			<div class="flex items-center justify-between px-6 py-4 border-t shrink-0">
-				<span class="text-xs text-muted-foreground">
-					{exportTab === 'svelte' ? '+page.svelte' : exportTab === 'server' ? '+page.server.ts' : slug + '.html'}
-				</span>
-				<div class="flex gap-2">
-					<button
-						onclick={copyExport}
-						class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-border text-sm font-medium hover:bg-muted transition-colors"
-					>
-						📋 Copy
-					</button>
-					<button
-						onclick={downloadExport}
-						class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors gap-2"
-					>
-						<Download size={14} /> Download
-					</button>
-				</div>
-			</div>
-		</div>
-	</div>
-{/if}
 
 <style>
 	:global(.custom-scrollbar::-webkit-scrollbar) {

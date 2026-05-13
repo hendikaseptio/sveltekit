@@ -3,10 +3,47 @@
 	import * as Breadcrumb from '$lib/components/ui/breadcrumb';
 	import { Badge } from '$lib/components/ui/badge';
 	import * as Card from '$lib/components/ui/card';
-	import { ArrowRight, Calendar } from "lucide-svelte";
+	import { 
+		ArrowRight, 
+		Calendar, 
+		Share2, 
+		Link as LinkIcon,
+		Check
+	} from "lucide-svelte";
 	import SEO from "$lib/components/SEO.svelte";
+	import { page } from '$app/state';
 
 	let { data } = $props();
+	
+	let copied = $state(false);
+	const currentUrl = $derived(page.url.href);
+
+	function copyToClipboard() {
+		navigator.clipboard.writeText(currentUrl);
+		copied = true;
+		setTimeout(() => copied = false, 2000);
+	}
+
+	const shareLinks = $derived([
+		{
+			name: 'Facebook',
+			icon: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>`,
+			href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`,
+			color: 'hover:text-[#1877F2] hover:bg-[#1877F2]/10'
+		},
+		{
+			name: 'X (Twitter)',
+			icon: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>`,
+			href: `https://twitter.com/intent/tweet?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(data.article.title)}`,
+			color: 'hover:text-black hover:bg-black/10 dark:hover:text-white dark:hover:bg-white/10'
+		},
+		{
+			name: 'LinkedIn',
+			icon: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0z"/></svg>`,
+			href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(currentUrl)}`,
+			color: 'hover:text-[#0A66C2] hover:bg-[#0A66C2]/10'
+		}
+	]);
 </script>
 
 <SEO 
@@ -14,6 +51,7 @@
 	description={data.article.excerpt || "Baca artikel selengkapnya di website kami."}
 	image={data.article.cover || "/images/hero.png"}
 	type="article"
+	url={currentUrl}
 />
 
 <div class="container mx-auto px-4 py-8 lg:px-6">
@@ -40,22 +78,58 @@
 		<div class="lg:col-span-8">
 			<article class="prose prose-slate dark:prose-invert lg:prose-xl max-w-none">
 				<header class="mb-8">
-					<div class="mb-4 flex items-center gap-3">
-						<Badge variant="secondary" class="bg-primary/10 text-primary hover:bg-primary/20 border-none px-3">
-							Teknologi
-						</Badge>
-						<span class="flex items-center gap-1.5 text-sm text-muted-foreground">
-							<Calendar size={16} />
-							{new Date(data.article.publishedAt).toLocaleDateString('id-ID', {
-								day: 'numeric',
-								month: 'long',
-								year: 'numeric'
-							})}
-						</span>
+					<div class="mb-4 flex items-center justify-between">
+						<div class="flex items-center gap-3">
+							<Badge variant="secondary" class="bg-primary/10 text-primary hover:bg-primary/20 border-none px-3">
+								Teknologi
+							</Badge>
+							<span class="flex items-center gap-1.5 text-sm text-muted-foreground">
+								<Calendar size={16} />
+								{new Date(data.article.publishedAt).toLocaleDateString('id-ID', {
+									day: 'numeric',
+									month: 'long',
+									year: 'numeric'
+								})}
+							</span>
+						</div>
+
+						<!-- Social Share Buttons (SVG) -->
+						<div class="flex items-center gap-1">
+							{#each shareLinks as link}
+								<Button 
+									variant="ghost" 
+									size="icon" 
+									href={link.href} 
+									target="_blank" 
+									class="h-9 w-9 rounded-full {link.color}"
+									title="Share to {link.name}"
+								>
+									{@html link.icon}
+								</Button>
+							{/each}
+							<Button 
+								variant="ghost" 
+								size="icon" 
+								onclick={copyToClipboard} 
+								class="h-9 w-9 rounded-full hover:bg-primary/10 hover:text-primary"
+								title="Copy Link"
+							>
+								{#if copied}
+									<Check size={18} class="text-green-500" />
+								{:else}
+									<LinkIcon size={18} />
+								{/if}
+							</Button>
+						</div>
 					</div>
 					<h1 class="mb-6 text-4xl font-extrabold tracking-tight lg:text-5xl">
 						{data.article.title}
 					</h1>
+					{#if data.article.cover}
+						<div class="overflow-hidden rounded-3xl border border-border/50 shadow-lg mb-10">
+							<img src={data.article.cover} alt={data.article.title} class="w-full aspect-video object-cover" />
+						</div>
+					{/if}
 				</header>
 
 				<div class="mt-8 text-lg leading-relaxed text-foreground/90">
@@ -63,10 +137,43 @@
 				</div>
 
 				<footer class="mt-16 border-t border-border/40 pt-10">
-					<Button variant="outline" href="/artikel" class="gap-2 group">
-						<span class="transition-transform group-hover:-translate-x-1">&larr;</span>
-						Kembali ke Daftar Artikel
-					</Button>
+					<div class="flex flex-col sm:flex-row items-center justify-between gap-6">
+						<Button variant="outline" href="/artikel" class="gap-2 group">
+							<span class="transition-transform group-hover:-translate-x-1">&larr;</span>
+							Kembali ke Daftar Artikel
+						</Button>
+
+						<div class="flex items-center gap-3">
+							<span class="text-sm font-medium text-muted-foreground flex items-center gap-2">
+								<Share2 size={16} /> Bagikan:
+							</span>
+							<div class="flex items-center gap-1">
+								{#each shareLinks as link}
+									<Button 
+										variant="outline" 
+										size="icon" 
+										href={link.href} 
+										target="_blank" 
+										class="h-10 w-10 rounded-full {link.color}"
+									>
+										{@html link.icon}
+									</Button>
+								{/each}
+								<Button 
+									variant="outline" 
+									size="icon" 
+									onclick={copyToClipboard} 
+									class="h-10 w-10 rounded-full hover:bg-primary/10 hover:text-primary"
+								>
+									{#if copied}
+										<Check size={20} class="text-green-500" />
+									{:else}
+										<LinkIcon size={20} />
+									{/if}
+								</Button>
+							</div>
+						</div>
+					</div>
 				</footer>
 			</article>
 		</div>
