@@ -3,10 +3,10 @@ import { setting } from '$lib/server/db/schema';
 import { redirect } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
 
-export const load: LayoutServerLoad = async ({ url }) => {
+export const load: LayoutServerLoad = async ({ url, locals }) => {
 	// Skip check for the setup page itself to avoid infinite redirect
 	if (url.pathname === '/admin/setup') {
-		return {};
+		return { user: locals.user };
 	}
 
 	try {
@@ -18,7 +18,8 @@ export const load: LayoutServerLoad = async ({ url }) => {
 		}
 
 		return {
-			settings: settings[0]
+			settings: settings[0],
+			user: locals.user
 		};
 	} catch (e: any) {
 		// If it's a redirect, re-throw it

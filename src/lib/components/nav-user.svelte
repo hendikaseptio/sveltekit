@@ -9,10 +9,27 @@
 	import * as Avatar from "$lib/components/ui/avatar/index.js";
 	import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
 	import * as Sidebar from "$lib/components/ui/sidebar/index.js";
+	import { authClient } from "$lib/auth-client";
+	import { goto } from "$app/navigation";
+	import { toast } from "svelte-sonner";
 
-	let { user }: { user: { name: string; email: string; avatar: string } } = $props();
+	let { user }: { user: { name: string; email: string; image?: string } } = $props();
 
 	const sidebar = Sidebar.useSidebar();
+
+	async function handleLogout() {
+		const { error } = await authClient.signOut({
+			fetchOptions: {
+				onSuccess: () => {
+					toast.success("Berhasil keluar.");
+					goto("/auth/login");
+				}
+			}
+		});
+		if (error) {
+			toast.error("Gagal keluar. Silakan coba lagi.");
+		}
+	}
 </script>
 
 <Sidebar.Menu>
@@ -25,9 +42,11 @@
 						size="lg"
 						class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
 					>
-						<Avatar.Root class="size-8 rounded-lg grayscale">
-							<Avatar.Image src={user.avatar} alt={user.name} />
-							<Avatar.Fallback class="rounded-lg">CN</Avatar.Fallback>
+						<Avatar.Root class="size-8 rounded-lg">
+							<Avatar.Image src={user.image} alt={user.name} />
+							<Avatar.Fallback class="rounded-lg bg-primary text-primary-foreground font-bold">
+								{user.name.charAt(0).toUpperCase()}
+							</Avatar.Fallback>
 						</Avatar.Root>
 						<div class="grid flex-1 text-start text-sm leading-tight">
 							<span class="truncate font-medium">{user.name}</span>
@@ -48,8 +67,10 @@
 				<DropdownMenu.Label class="p-0 font-normal">
 					<div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
 						<Avatar.Root class="size-8 rounded-lg">
-							<Avatar.Image src={user.avatar} alt={user.name} />
-							<Avatar.Fallback class="rounded-lg">CN</Avatar.Fallback>
+							<Avatar.Image src={user.image} alt={user.name} />
+							<Avatar.Fallback class="rounded-lg bg-primary text-primary-foreground">
+								{user.name.charAt(0).toUpperCase()}
+							</Avatar.Fallback>
 						</Avatar.Root>
 						<div class="grid flex-1 text-start text-sm leading-tight">
 							<span class="truncate font-medium">{user.name}</span>
@@ -62,22 +83,18 @@
 				<DropdownMenu.Separator />
 				<DropdownMenu.Group>
 					<DropdownMenu.Item>
-						<User />
-						Account
+						<User class="size-4" />
+						Profil Akun
 					</DropdownMenu.Item>
 					<DropdownMenu.Item>
-						<CreditCard />
-						Billing
-					</DropdownMenu.Item>
-					<DropdownMenu.Item>
-						<Bell />
-						Notifications
+						<Bell class="size-4" />
+						Notifikasi
 					</DropdownMenu.Item>
 				</DropdownMenu.Group>
 				<DropdownMenu.Separator />
-				<DropdownMenu.Item>
-					<LogOut />
-					Log out
+				<DropdownMenu.Item onclick={handleLogout} class="text-destructive focus:bg-destructive/10 focus:text-destructive cursor-pointer">
+					<LogOut class="size-4" />
+					Keluar (Logout)
 				</DropdownMenu.Item>
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>

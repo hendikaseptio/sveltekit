@@ -7,6 +7,7 @@ import { getTextDirection } from '$lib/paraglide/runtime';
 import { paraglideMiddleware } from '$lib/paraglide/server';
 import { db } from '$lib/server/db';
 import { analytics } from '$lib/server/db/schema';
+import { redirect } from '@sveltejs/kit';
 
 const handleParaglide: Handle = ({ event, resolve }) =>
 	paraglideMiddleware(event.request, ({ request, locale }) => {
@@ -31,6 +32,26 @@ const handleBetterAuth: Handle = async ({ event, resolve }) => {
 	return svelteKitHandler({ event, resolve, auth, building });
 };
 
+const handleGuard: Handle = async ({ event, resolve }) => {
+	const url = event.url.pathname;
+	const isLogged = !!event.locals.user;
+
+	// 1. Protect Admin Routes
+	// Except for setup and auth-related admin paths if any
+	if (url.startsWith('/admin') && !url.startsWith('/admin/setup')) {
+		if (!isLogged) {
+			throw redirect(303, '/auth/login');
+		}
+	}
+
+	// 2. Prevent Logged Users from accessing Auth pages (Login/Register)
+	if (url.startsWith('/auth') && isLogged) {
+		throw redirect(303, '/admin/dashboard');
+	}
+
+	return resolve(event);
+};
+
 const handleAnalytics: Handle = async ({ event, resolve }) => {
 	const url = event.url.pathname;
 	
@@ -41,11 +62,10 @@ const handleAnalytics: Handle = async ({ event, resolve }) => {
 	const isApi = url.startsWith('/api');
 
 	if (!isStatic && !isAdmin && !isAuth && !isApi && !building) {
-		// Log the visit asynchronously so it doesn't block the response
+		// Log the visit asynchronously
 		const ip = event.getClientAddress();
 		const userAgent = event.request.headers.get('user-agent');
 		
-		// Run in background
 		db.insert(analytics).values({
 			url,
 			ip,
@@ -56,4 +76,4 @@ const handleAnalytics: Handle = async ({ event, resolve }) => {
 	return resolve(event);
 };
 
-export const handle: Handle = sequence(handleParaglide, handleBetterAuth, handleAnalytics);
+export const handle: Handle = sequence(handleParaglide, handleBetterAuth, handleGuard, handleAnalytics);
